@@ -64,6 +64,7 @@ public class DataBase {
 	public void create() throws Exception {
 
 		try {
+			stmt.executeUpdate("DROP TABLE IF EXISTS "+tablename);
 			stmt.executeUpdate("CREATE TABLE "+tablename+"(filepath TEXT PRIMARY KEY, size INTEGER)");
 		} finally {
 			try {

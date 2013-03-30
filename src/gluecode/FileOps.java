@@ -22,11 +22,11 @@ import database.DataBase;
 public class FileOps {
 
 	public static void addFolder(String FOLDER) throws Exception {
-		Files.walkFileTree(Paths.get(FOLDER),new ProcessFile());
+		Files.walkFileTree(Paths.get(FOLDER), new ProcessFile());
 	}
 
 	private static final class ProcessFile extends SimpleFileVisitor<Path> {
-		DataBase database = new DataBase();
+		private DataBase database = new DataBase();
 
 		ProcessFile() throws Exception {
 			database.create();
@@ -42,10 +42,10 @@ public class FileOps {
 			}
 			return FileVisitResult.CONTINUE;
 		}
-		
-		protected void finalize(){
+
+		protected void finalize() {
 			database.closeConnection();
-		}	
+		}
 	}
 
 	public static String[] getFiles(String category) throws Exception {
@@ -71,7 +71,7 @@ public class FileOps {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		getFiles("Music");
+		getFiles("Videos");
 	}
 
 }
