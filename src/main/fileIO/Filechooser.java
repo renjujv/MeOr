@@ -27,7 +27,7 @@ public class Filechooser extends JFileChooser
 							chooser.setVisible(true);
 						}
 						catch (Exception e) {
-							e.printStackTrace();
+						//	e.printStackTrace();
 						}
 					}
 			});
@@ -47,7 +47,7 @@ public class Filechooser extends JFileChooser
 	
 	public Filechooser() {
     setCurrentDirectory(new java.io.File("."));
-    setDialogTitle("choosertitle");
+    setDialogTitle("File Import");
     setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     setAcceptAllFileFilterUsed(false);
 
@@ -58,8 +58,7 @@ public class Filechooser extends JFileChooser
 			gluecode.FileOps.addFolder(getSelectedFile().getAbsolutePath());
 		}
 		catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		//	e.printStackTrace();
 		}
     }
     else {

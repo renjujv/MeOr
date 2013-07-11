@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author pappu
+ * @author Abijith
  * 
  */
 
@@ -102,8 +102,7 @@ public class DataBase {
 	 */
 	public void insert(Path filepath, long size) throws Exception {
 		try {
-			stmt.executeUpdate("INSERT INTO "+tablename+" VALUES('" + filepath
-					+ "','" + size + "')");
+			stmt.executeUpdate("INSERT INTO "+tablename+" VALUES('" + filepath+ "','" + size + "')");
 		} finally {
 			try {
 				stmt.close();

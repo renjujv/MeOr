@@ -30,7 +30,6 @@ public class OpenFile
 				openFile(System.getProperty("user.dir") + "/README.md");
 			}
 			catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
