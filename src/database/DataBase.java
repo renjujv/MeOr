@@ -20,7 +20,7 @@ public class DataBase {
 	 * The String variables below will produce a legitimate for SqlLite JDBC :
 	 * jdbc:sqlite:FileList.db
 	 */
-	private String sDriverName = "org.sqlite.JDBC", dbfilename = "FileList.db",
+	private final String sDriverName = "org.sqlite.JDBC", dbfilename = "FileList.db",
 			sJdbc = "jdbc:sqlite", sDbUrl = sJdbc + ":" + dbfilename,tablename="FileList";
 	private int iTimeout = 30;
 	private Connection conn = null;
