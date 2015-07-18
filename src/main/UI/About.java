@@ -22,7 +22,7 @@ import java.awt.Color;
 @SuppressWarnings("serial")
 public class About extends JFrame
 {	
-	private double version=0.1;
+	private final double version=0.2;
 	private JPanel aboutpanel;
 	public static void main(String[] args)
 		{

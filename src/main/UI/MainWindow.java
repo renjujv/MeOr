@@ -59,12 +59,11 @@ public class MainWindow extends JFrame{
 	{
 		EventQueue.invokeLater(new Runnable() {
 			public void run()
-				{
+				{//exception handling for MainWindow
 						try {
 							MainWindow GUI = new MainWindow();
 							GUI.setVisible(true);
 						} catch (Exception e) {
-							// TODO exception handling for MainWindow
 							e.printStackTrace();
 						}
 						
