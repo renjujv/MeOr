@@ -119,6 +119,7 @@ public class MainWindow extends JFrame{
 		});
 		fileMenu.add(importmnItem);
 		JMenuItem clearlistmnItem = new JMenuItem("Clear list");
+		fileMenu.add(clearlistmnItem);
 		clearlistmnItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mylistmodel.removeAllElements();
