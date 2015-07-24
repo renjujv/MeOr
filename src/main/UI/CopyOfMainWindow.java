@@ -48,7 +48,7 @@ import java.beans.PropertyChangeEvent;
 
 //GUI Class MainFrame
 
-public class MainWindow extends JFrame{
+public class CopyOfMainWindow extends JFrame{
 	private JTextField searchField;
 	private JButton btnGo;
 	@SuppressWarnings("unused")
@@ -66,7 +66,7 @@ public class MainWindow extends JFrame{
 			public void run()
 				{//exception handling for MainWindow
 						try {
-							MainWindow GUI = new MainWindow();
+							CopyOfMainWindow GUI = new CopyOfMainWindow();
 							GUI.setVisible(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -77,9 +77,9 @@ public class MainWindow extends JFrame{
 	}
 	
 	//Constructor
-	public MainWindow() throws Exception{
+	public CopyOfMainWindow() throws Exception{
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource(windowicon)));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(CopyOfMainWindow.class.getResource(windowicon)));
 		setTitle("MeOr - Media Organiser");
 		setSize(860, 715);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -160,7 +160,7 @@ public class MainWindow extends JFrame{
 
 		JLabel lblSearch = new JLabel("Search");
 		lblSearch.setVisible(true);
-		lblSearch.setIcon(new ImageIcon(MainWindow.class.getResource("/main/fileIO/search.png")));
+		lblSearch.setIcon(new ImageIcon(CopyOfMainWindow.class.getResource("/main/fileIO/search.png")));
 		menuBar.add(lblSearch);
 
 		searchField = new JTextField();
