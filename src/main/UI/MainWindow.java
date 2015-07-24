@@ -78,6 +78,7 @@ public class MainWindow extends JFrame{
 		setTitle("MeOr - Media Organiser");
 		setSize(860, 715);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setLayout(null);
 		setMenuBar();
 //		setThemeSel();
 		setCategpanel();
