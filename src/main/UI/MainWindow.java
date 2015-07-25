@@ -56,7 +56,7 @@ public class MainWindow extends JFrame{
 	private JTree categtree;
 	DefaultListModel<Object> mylistmodel = new DefaultListModel<Object>();
 	private JPanel itemspanel;
-	private String windowicon = "/main/UI/Meor_icon.png";
+	private String windowicon = "/resources/meor_icon.png";
 	private String[] values;
 	
 	
@@ -79,7 +79,12 @@ public class MainWindow extends JFrame{
 	//Constructor
 	public MainWindow() throws Exception{
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource(windowicon)));
+		try {
+			setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource(windowicon)));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		setTitle("MeOr - Media Organiser");
 		setSize(860, 715);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -160,7 +165,7 @@ public class MainWindow extends JFrame{
 
 		JLabel lblSearch = new JLabel("Search");
 		lblSearch.setVisible(true);
-		lblSearch.setIcon(new ImageIcon(MainWindow.class.getResource("/main/fileIO/search.png")));
+		lblSearch.setIcon(new ImageIcon(MainWindow.class.getResource("/resources/search.png")));
 		menuBar.add(lblSearch);
 
 		searchField = new JTextField();
