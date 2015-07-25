@@ -306,7 +306,7 @@ public class CopyOfMainWindow extends JFrame{
 				System.out.println(selectedCat);
 
 				try {
-					values = gluecode.FileOps.getFiles(selectedCat);
+					values = core.FileOps.getFiles(selectedCat);
 				}
 				catch (Exception e) {
 					e.printStackTrace();

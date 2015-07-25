@@ -55,7 +55,7 @@ public class Filechooser extends JFileChooser
       System.out.println("getCurrentDirectory(): " + getCurrentDirectory());
       System.out.println("getSelectedFile() : " + getSelectedFile().getAbsolutePath());
       try {
-			gluecode.FileOps.addFolder(getSelectedFile().getAbsolutePath());
+			core.FileOps.addFolder(getSelectedFile().getAbsolutePath());
 		}
 		catch (Exception e) {
 		//	e.printStackTrace();
