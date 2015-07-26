@@ -1,3 +1,4 @@
+#binaries
 /bin/
+#SQLite DB file
 /FileList.db
-/test

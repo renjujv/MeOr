@@ -1,12 +1,10 @@
 package main.UI;
 
-import main.UI.About;
-import main.fileIO.Filechooser;
-
-import java.awt.Toolkit;
-import java.awt.Color;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -15,30 +13,31 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
+import javax.swing.Box;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.JMenuItem;
-import javax.swing.JTree;
-import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.event.*;
-import javax.swing.JLayeredPane;
-import javax.swing.BoxLayout;
-import javax.swing.JScrollPane;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.JList;
-import javax.swing.ImageIcon;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JTree;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
-
+import main.fileIO.FileChooser;
 
 /**
  * @author RenJOuS
@@ -48,44 +47,49 @@ import java.beans.PropertyChangeEvent;
 
 //GUI Class MainFrame
 
-public class CopyOfMainWindow extends JFrame{
+public class MainWindowTest extends JFrame{
 	private JTextField searchField;
 	private JButton btnGo;
-	@SuppressWarnings("unused")
 	private JLabel lblSearch;
 	private JTree categtree;
-	DefaultListModel<Object> mylistmodel = new DefaultListModel<Object>();
+	private DefaultListModel<Object> mylistmodel = new DefaultListModel<Object>();
 	private JPanel itemspanel;
-	private String windowicon = "/main/UI/Meor_icon.png";
 	private String[] values;
-	
-	
+	private String windowicon = "/resources/meor_icon.png";
+
+
 	public static void main(String[] args)
 	{
 		EventQueue.invokeLater(new Runnable() {
 			public void run()
-				{//exception handling for MainWindow
-						try {
-							CopyOfMainWindow GUI = new CopyOfMainWindow();
-							GUI.setVisible(true);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						
+			{//exception handling for MainWindow
+				try {
+					MainWindowTest GUI = new MainWindowTest();
+					GUI.setVisible(true);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
 				}
+
+			}
 		});
 	}
-	
-	//Constructor
-	public CopyOfMainWindow() throws Exception{
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(CopyOfMainWindow.class.getResource(windowicon)));
+	//Constructor
+	public MainWindowTest() throws Exception{
+
+		try {
+			setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindowTest.class.getResource(windowicon)));
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		setTitle("MeOr - Media Organiser");
 		setSize(860, 715);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLayout(null);
+		//setLayout(null);
+		
 		setMenuBar();
-//		setThemeSel();
+		setStatBar();
+		//		setThemeSel();
 		setCategpanel();
 		setItemspanel();
 	}
@@ -93,8 +97,8 @@ public class CopyOfMainWindow extends JFrame{
 	public void setMenuBar(){
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setSize(543, 25);
-		setJMenuBar(menuBar);
-
+		getContentPane().add(menuBar,BorderLayout.NORTH);
+		
 		JMenu fileMenu = new JMenu("File");
 		menuBar.add(fileMenu);
 
@@ -111,14 +115,23 @@ public class CopyOfMainWindow extends JFrame{
 		importmnItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0)
 			{
-				Filechooser selfiles = new Filechooser();
+				FileChooser selfiles = new FileChooser();
 				selfiles.setVisible(true);
 				try {
 					for(int i=0;i<values.length;i++)
 						mylistmodel.addElement(values[i]);
+					//				
+					//					Thread t1 = new Thread(new Runnable() {
+					//					     public void run() {
+					//					    	 for(int i=0;i<values.length;i++)
+					//					    		 mylistmodel.addElement(values[i]);
+					//					     }
+					//					});  
+					//					t1.start();
+
 				} catch (Exception e) {
-					// Catch null pointer eception
-					e.printStackTrace();
+					// Catch null pointer exception
+					System.out.println(e.getMessage());
 				}
 			}
 		});
@@ -130,8 +143,8 @@ public class CopyOfMainWindow extends JFrame{
 				mylistmodel.removeAllElements();
 			}
 		});
-		
-		
+
+
 		JMenuItem exitmnItem = new JMenuItem("Exit");
 		fileMenu.add(exitmnItem);
 		exitmnItem.addActionListener(new ActionListener() {
@@ -140,7 +153,7 @@ public class CopyOfMainWindow extends JFrame{
 				System.exit(0);
 			}
 		});
-		
+
 
 		JMenu helpMenu = new JMenu("Help");
 		menuBar.add(helpMenu);
@@ -155,16 +168,16 @@ public class CopyOfMainWindow extends JFrame{
 				help.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			}
 		});
-		
 
+		menuBar.add(Box.createRigidArea(new Dimension(400, 5)));
 
-		JLabel lblSearch = new JLabel("Search");
+		lblSearch = new JLabel("Search");
 		lblSearch.setVisible(true);
-		lblSearch.setIcon(new ImageIcon(CopyOfMainWindow.class.getResource("/main/fileIO/search.png")));
+		lblSearch.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblSearch.setIcon(new ImageIcon(MainWindowTest.class.getResource("/resources/search.png")));
 		menuBar.add(lblSearch);
 
 		searchField = new JTextField();
-		//		searchField.setVisible(false);// invisible
 		searchField.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
 				searchField.setText(null);
@@ -172,88 +185,97 @@ public class CopyOfMainWindow extends JFrame{
 		});
 		searchField.setToolTipText("Search");
 		searchField.setText("Enter title");
+		//searchField.setHorizontalAlignment(SwingConstants.LEFT);
 		menuBar.add(searchField);
 		searchField.setColumns(5);
 
 		btnGo = new JButton("Go");
 		btnGo.setVisible(true);
+		btnGo.setHorizontalAlignment(SwingConstants.RIGHT);
 		btnGo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println(values[0]);
-				for(int i=0;i<values.length;i++){
-					mylistmodel.addElement(values[i]);
-				}
+				//				for(int i=0;i<values.length;i++){
+				//					mylistmodel.addElement(values[i]);
+				//				}
 
 			}
 		});
 		menuBar.add(btnGo);
 	}
-
-// commented theme selector for future implementation!!	
+	
+	public void setStatBar(){
+		JPanel statBar = new JPanel(new BorderLayout());
+		statBar.setName("StatusBar");
+		add(statBar, BorderLayout.SOUTH);
+		JProgressBar progressBar = new JProgressBar(0,100);
+		statBar.add(progressBar,BorderLayout.EAST);
+		
+	}
+	// commented theme selector for future implementation!!	
 	{
-//	public void setThemeSel(){
-//		//	theme selector
-//		JLabel lblTheme = new JLabel("Theme");
-//		lblTheme.setVerticalAlignment(SwingConstants.TOP);
-//		lblTheme.setHorizontalAlignment(SwingConstants.TRAILING);
-//		menuBar.add(lblTheme);
-//
-//		JRadioButton rdbtnnative = new JRadioButton("Native");
-//		rdbtnnative.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0)
-//			{
-//				try {
-//					UIManager.setLookAndFeel("Nimbus");
-//				}
-//				catch (ClassNotFoundException | InstantiationException
-//						| IllegalAccessException | UnsupportedLookAndFeelException e) {
-//					e.printStackTrace();
-//				}
-//				SwingUtilities.updateComponentTreeUI(getComponent(4));
-//				((Window) getContentPane()).pack();
-//			}
-//		});
-//		rdbtnnative.setSelected(true);
-//		rdbtnnative.setVerticalAlignment(SwingConstants.TOP);
-//		rdbtnnative.setHorizontalAlignment(SwingConstants.TRAILING);
-//		buttonGroup.add(rdbtnnative);
-//		menuBar.add(rdbtnnative);
-//
-//		JRadioButton rdbtncrossplat = new JRadioButton("Cross Platform");
-//		rdbtncrossplat.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0)
-//			{
-//				try {
-//					UIManager.setLookAndFeel("Windows");
-//				}
-//				catch (ClassNotFoundException | InstantiationException
-//						| IllegalAccessException | UnsupportedLookAndFeelException e) {
-//					e.printStackTrace();
-//				}
-//				SwingUtilities.updateComponentTreeUI(getContentPane());
-//				((Window) getContentPane()).pack();
-//			}
-//		});
-//		rdbtnnative.setVerticalAlignment(SwingConstants.TOP);
-//		rdbtncrossplat.setHorizontalAlignment(SwingConstants.TRAILING);
-//		buttonGroup.add(rdbtncrossplat);
-//		menuBar.add(rdbtncrossplat);
-//		//	theme selector ends
-//	}
+		//	public void setThemeSel(){
+		//		//	theme selector
+		//		JLabel lblTheme = new JLabel("Theme");
+		//		lblTheme.setVerticalAlignment(SwingConstants.TOP);
+		//		lblTheme.setHorizontalAlignment(SwingConstants.TRAILING);
+		//		menuBar.add(lblTheme);
+		//
+		//		JRadioButton rdbtnnative = new JRadioButton("Native");
+		//		rdbtnnative.addActionListener(new ActionListener() {
+		//			public void actionPerformed(ActionEvent arg0)
+		//			{
+		//				try {
+		//					UIManager.setLookAndFeel("Nimbus");
+		//				}
+		//				catch (ClassNotFoundException | InstantiationException
+		//						| IllegalAccessException | UnsupportedLookAndFeelException e) {
+		//					e.printStackTrace();
+		//				}
+		//				SwingUtilities.updateComponentTreeUI(getComponent(4));
+		//				((Window) getContentPane()).pack();
+		//			}
+		//		});
+		//		rdbtnnative.setSelected(true);
+		//		rdbtnnative.setVerticalAlignment(SwingConstants.TOP);
+		//		rdbtnnative.setHorizontalAlignment(SwingConstants.TRAILING);
+		//		buttonGroup.add(rdbtnnative);
+		//		menuBar.add(rdbtnnative);
+		//
+		//		JRadioButton rdbtncrossplat = new JRadioButton("Cross Platform");
+		//		rdbtncrossplat.addActionListener(new ActionListener() {
+		//			public void actionPerformed(ActionEvent arg0)
+		//			{
+		//				try {
+		//					UIManager.setLookAndFeel("Windows");
+		//				}
+		//				catch (ClassNotFoundException | InstantiationException
+		//						| IllegalAccessException | UnsupportedLookAndFeelException e) {
+		//					e.printStackTrace();
+		//				}
+		//				SwingUtilities.updateComponentTreeUI(getContentPane());
+		//				((Window) getContentPane()).pack();
+		//			}
+		//		});
+		//		rdbtnnative.setVerticalAlignment(SwingConstants.TOP);
+		//		rdbtncrossplat.setHorizontalAlignment(SwingConstants.TRAILING);
+		//		buttonGroup.add(rdbtncrossplat);
+		//		menuBar.add(rdbtncrossplat);
+		//		//	theme selector ends
+		//	}
 	}
 	public void setCategpanel(){
-		final JLayeredPane categpanel = new JLayeredPane();
-		categpanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)),
-				"Categories", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		categpanel.setBounds(0, 0, 169, getHeight());
-		add(categpanel);
-		categpanel.setLayout(new BoxLayout(categpanel, BoxLayout.X_AXIS));
-
+		final JPanel categpanel = new JPanel();
+		categpanel.setLayout(new BorderLayout(0, 0));
+		getContentPane().add(categpanel,BorderLayout.WEST);
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setViewportBorder(null);
+		scrollPane.setPreferredSize(new Dimension(150,getHeight()));
 		categpanel.add(scrollPane);
 
 		DefaultMutableTreeNode top = new DefaultMutableTreeNode("Categories");
 		categtree = new JTree(top);
+		categtree.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		DefaultMutableTreeNode media = new DefaultMutableTreeNode("Media");
 		DefaultMutableTreeNode software = new DefaultMutableTreeNode("Softwares");
 		DefaultMutableTreeNode document = new DefaultMutableTreeNode("Documents");
@@ -309,7 +331,7 @@ public class CopyOfMainWindow extends JFrame{
 					values = core.FileOps.getFiles(selectedCat);
 				}
 				catch (Exception e) {
-					e.printStackTrace();
+					System.out.println(e.getMessage());
 				}
 				mylistmodel.removeAllElements();
 				for(int i=0;i<values.length;i++)
@@ -320,60 +342,59 @@ public class CopyOfMainWindow extends JFrame{
 		//tree event listener ends here
 	}
 
-	@SuppressWarnings("unchecked")
 	public void setItemspanel(){
 		itemspanel = new JPanel();
-		itemspanel.setBounds(172, 3, 1195, 711);
-		add(itemspanel);
+		itemspanel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		itemspanel.setLayout(new BorderLayout(0, 0));
+		getContentPane().add(itemspanel, BorderLayout.CENTER);
+		
 		JScrollPane itemscrollPane = new JScrollPane();
 		itemscrollPane
 		.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		itemscrollPane
 		.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		itemspanel.add(itemscrollPane);
-
-		@SuppressWarnings("rawtypes")
-		final JList list = new JList();
-		list.addPropertyChangeListener(new PropertyChangeListener() {
+		final JList<Object> list = new JList<Object>();
+		/*		list.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				//mylistmodel.addElement();
 				//mylistmodel.addElement(values);
 
 			}
 		});
-		list.setLayoutOrientation(JList.VERTICAL);
-		list.setVisibleRowCount(30);
-		list.setModel(mylistmodel);
+		 */		list.setLayoutOrientation(JList.VERTICAL);
+		 list.setVisibleRowCount(30);
+		 list.setModel(mylistmodel);
 
-		//			{
-		//		// String[] values = new String[] {"fg", "fgu", "ghg"};
-		//
-		//			String[] values = gluecode.FileOps.getFiles("Music");
-		//			public int getSize()
-		//				{
-		//					return values.length;
-		//				}
-		//			public Object getElementAt(int index)
-		//				{
-		//					return values[index];
-		//				}
-		//		});
-		list.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				int cc=e.getClickCount();
-				if(cc==2){
-					String selected= list.getSelectedValue().toString();
-					System.out.println("Mouse clicked on list");
-					try {
-						main.fileIO.OpenFile.openFile(selected);
-					}
-					catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				}
-			}
-		});
-		itemscrollPane.setViewportView(list);
+		 //			{
+		 //		// String[] values = new String[] {"fg", "fgu", "ghg"};
+		 //
+		 //			String[] values = gluecode.FileOps.getFiles("Music");
+		 //			public int getSize()
+		 //				{
+		 //					return values.length;
+		 //				}
+		 //			public Object getElementAt(int index)
+		 //				{
+		 //					return values[index];
+		 //				}
+		 //		});
+		 list.addMouseListener(new MouseAdapter() {
+			 public void mouseClicked(MouseEvent e) {
+				 int cc=e.getClickCount();
+				 if(cc==2){
+					 String selected= list.getSelectedValue().toString();
+					 System.out.println("Mouse clicked on list");
+					 try {
+						 main.fileIO.OpenFile.openFile(selected);
+					 }
+					 catch (IOException e1) {
+						 System.out.println(e1.getMessage());
+					 }
+				 }
+			 }
+		 });
+		 itemscrollPane.setViewportView(list);
 	}
+
 }
