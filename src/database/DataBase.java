@@ -2,10 +2,10 @@ package database;
 
 import java.nio.file.Path;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +20,9 @@ public class DataBase {
 	 * The String variables below will produce a legitimate for SqlLite JDBC :
 	 * jdbc:sqlite:FileList.db
 	 */
-	private final String sDriverName = "org.sqlite.JDBC", dbfilename = "FileList.db",
-			sJdbc = "jdbc:sqlite", sDbUrl = sJdbc + ":" + dbfilename,tablename="FileList";
+	private final String sDriverName = "org.sqlite.JDBC",
+			dbfilename = "FileList.db", sJdbc = "jdbc:sqlite", sDbUrl = sJdbc
+					+ ":" + dbfilename, tablename = "FileList";
 	private int iTimeout = 30;
 	private Connection conn = null;
 	private Statement stmt = null;
@@ -64,8 +65,9 @@ public class DataBase {
 	public void create() throws Exception {
 
 		try {
-			stmt.executeUpdate("DROP TABLE IF EXISTS "+tablename);
-			stmt.executeUpdate("CREATE TABLE "+tablename+"(filepath TEXT PRIMARY KEY, size INTEGER)");
+			stmt.executeUpdate("DROP TABLE IF EXISTS " + tablename);
+			stmt.executeUpdate("CREATE TABLE " + tablename
+					+ "(filepath TEXT PRIMARY KEY, size INTEGER)");
 		} finally {
 			try {
 				stmt.close();
@@ -102,7 +104,8 @@ public class DataBase {
 	 */
 	public void insert(Path filepath, long size) throws Exception {
 		try {
-			stmt.executeUpdate("INSERT INTO "+tablename+" VALUES('" + filepath+ "','" + size + "')");
+			stmt.executeUpdate("INSERT INTO " + tablename + " VALUES('"
+					+ filepath + "','" + size + "')");
 		} finally {
 			try {
 				stmt.close();
@@ -119,36 +122,37 @@ public class DataBase {
 	public List<String> retrieve(String extension) throws Exception {
 
 		List<String> filelist = new ArrayList<String>();
-		
+
+		try {
+			ResultSet rs = stmt.executeQuery("SELECT filepath from "
+					+ tablename + " WHERE filepath LIKE '%." + extension + "'");
 			try {
-				ResultSet rs = stmt.executeQuery("SELECT filepath from "+tablename+" WHERE filepath LIKE '%."
-						+ extension + "'");
-				try {
-					while (rs.next()) {
-						String sResult = rs.getString("filepath");
-						System.out.println(sResult);
-						filelist.add(sResult);
-					}
-				} finally {
-					try {
-						rs.close();
-					} catch (Exception ignore) {
-					}
+				while (rs.next()) {
+					String sResult = rs.getString("filepath");
+					System.out.println(sResult);
+					filelist.add(sResult);
 				}
 			} finally {
 				try {
-					stmt.close();
+					rs.close();
 				} catch (Exception ignore) {
 				}
 			}
+		} finally {
+			try {
+				stmt.close();
+			} catch (Exception ignore) {
+			}
+		}
 		return filelist;
 	}
-	
-	protected void finalize(){
+
+	@Override
+	protected void finalize() {
 		closeConnection();
 	}
 
 	public static void main(String[] args) throws Exception {
-//
+		//
 	}
 }

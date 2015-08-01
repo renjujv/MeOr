@@ -1,4 +1,4 @@
-package main.UI;
+package main.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -39,7 +39,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import main.fileIO.Filechooser;
+import main.fileio.FileChooser;
 
 /**
  * @author RenJOuS
@@ -62,7 +62,7 @@ public class MainWindow extends JFrame
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	public MainWindow() throws Exception {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
-				MainWindow.class.getResource("/resources/meor.png")));
+				MainWindow.class.getResource("/resources/meor-icon.png")));
 		setVisible(true);
 		setTitle("MeOr - Media Organiser");
 		setSize(800, 600);
@@ -83,7 +83,7 @@ public class MainWindow extends JFrame
 		importmnItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0)
 				{
-					Filechooser selfiles = new Filechooser();
+					FileChooser selfiles = new FileChooser();
 					selfiles.setVisible(true);
 					for(int i=0;i<values.length;i++)
 						mylistmodel.addElement(values[i]);
@@ -353,7 +353,7 @@ public class MainWindow extends JFrame
 							String selected= list.getSelectedValue().toString();
 							System.out.println("Mouse clicked on list");
 							try {
-								main.fileIO.OpenFile.openFile(selected);
+								main.fileio.OpenFile.openFile(selected);
 							}
 							catch (IOException e1) {
 								e1.printStackTrace();
