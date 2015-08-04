@@ -1,4 +1,4 @@
-package main.UI;
+package main.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -39,7 +39,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import main.fileIO.FileChooser;
+import main.fileio.FileChooser;
 
 /**
  * @author RenJOuS
@@ -57,7 +57,7 @@ class MainWindow extends JFrame{
 	private DefaultListModel<Object> mylistmodel = new DefaultListModel<Object>();
 	private JPanel itemspanel;
 	private String[] values;
-	private final String windowicon = "/resources/meor_icon.png";
+	private final String windowicon = "/resources/meor-icon.png";
 
 
 	public static void main(String[] args)
@@ -273,6 +273,7 @@ class MainWindow extends JFrame{
 		DefaultMutableTreeNode document = new DefaultMutableTreeNode("Documents");
 		DefaultMutableTreeNode audio = new DefaultMutableTreeNode("Audio");
 		DefaultMutableTreeNode video = new DefaultMutableTreeNode("Video");
+		DefaultMutableTreeNode images = new DefaultMutableTreeNode("Images");
 		DefaultMutableTreeNode windows = new DefaultMutableTreeNode("Windows");
 		DefaultMutableTreeNode linux = new DefaultMutableTreeNode("Linux");
 		DefaultMutableTreeNode macintosh = new DefaultMutableTreeNode("Mac");
@@ -288,6 +289,7 @@ class MainWindow extends JFrame{
 		top.add(document);
 		media.add(audio);
 		media.add(video);
+		media.add(images);
 		software.add(windows);
 		software.add(linux);
 		software.add(macintosh);
@@ -377,7 +379,7 @@ class MainWindow extends JFrame{
 					 String selected= list.getSelectedValue().toString();
 					 System.out.println("Mouse clicked on list");
 					 try {
-						 main.fileIO.OpenFile.openFile(selected);
+						 main.fileio.OpenFile.openFile(selected);
 					 }
 					 catch (IOException e1) {
 						 System.out.println(e1.getMessage());

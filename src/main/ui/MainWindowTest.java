@@ -1,4 +1,4 @@
-package main.UI;
+package main.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -37,7 +37,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import main.fileIO.FileChooser;
+import main.fileio.FileChooser;
 
 /**
  * @author RenJOuS
@@ -55,7 +55,7 @@ class MainWindowTest extends JFrame{
 	private DefaultListModel<Object> mylistmodel = new DefaultListModel<Object>();
 	private JPanel itemspanel;
 	private String[] values;
-	private final String windowicon = "/resources/meor_icon.png";
+	private final String windowicon = "/resources/meor-icon.png";
 
 
 	public static void main(String[] args)
@@ -386,7 +386,7 @@ class MainWindowTest extends JFrame{
 					 String selected= list.getSelectedValue().toString();
 					 System.out.println("Mouse clicked on list");
 					 try {
-						 main.fileIO.OpenFile.openFile(selected);
+						 main.fileio.OpenFile.openFile(selected);
 					 }
 					 catch (IOException e1) {
 						 System.out.println(e1.getMessage());

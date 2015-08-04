@@ -1,4 +1,4 @@
-package main.fileIO;
+package main.fileio;
 import java.awt.EventQueue;
 
 import javax.swing.JFileChooser;

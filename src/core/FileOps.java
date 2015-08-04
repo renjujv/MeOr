@@ -13,7 +13,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
-import database.DataBase;
+import database.Database;
 
 /**
  * @author hexcube
@@ -47,7 +47,7 @@ public class FileOps {
 			}
 			};
 	
-	private static DataBase database;
+	private static Database database;
 	
 	/**
 	 * @param FOLDER absolute path of folder to be added
@@ -62,7 +62,7 @@ public class FileOps {
 	 *
 	 */
 	private static final class ProcessFile extends SimpleFileVisitor<Path> {
-		private DataBase dbase = new DataBase();
+		private Database dbase = new Database();
 
 		ProcessFile() throws Exception {
 			dbase.create();
@@ -91,7 +91,7 @@ public class FileOps {
 	 */
 	public static String[] getFiles(String category) throws Exception{
 		List<String> filelist = new ArrayList<String>();
-		database = new DataBase();
+		database = new Database();
 		boolean iscategory = false,allcategories=false;
 		if(category.equals("Categories"))
 			allcategories=true;

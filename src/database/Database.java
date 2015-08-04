@@ -14,7 +14,7 @@ import java.util.List;
  * 
  */
 
-public class DataBase {
+public class Database {
 
 	/**
 	 * The String variables below will produce a legitimate for SqlLite JDBC :
@@ -31,7 +31,7 @@ public class DataBase {
 	 * @throws SQLException
 	 * 
 	 */
-	public DataBase() throws ClassNotFoundException, SQLException {
+	public Database() throws ClassNotFoundException, SQLException {
 		// register the driver
 		try {
 			Class.forName(sDriverName);

@@ -1,4 +1,4 @@
-package main.UI;
+package main.ui;
 
 
 import java.awt.Color;
@@ -37,7 +37,7 @@ public class About extends JFrame
 	}
 	//Constructor
 	public About() {
-		setType(Type.POPUP);
+		//setType(Type.POPUP);
 		setTitle("About MeOr");
 		setResizable(false);
 		//setIconImage(new ImageIcon("/resources/meor_icon.png").getImage());
