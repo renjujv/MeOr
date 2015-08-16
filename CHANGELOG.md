@@ -3,6 +3,10 @@ MeOr adheres to [Semantic Versioning][semver]. All notable changes to MeOr
 will be documented in this changelog file. The structure of this file is
 loosely based on [keepachangelog.com][keepachangelog] guideline.
 
+## Unreleased   - Unreleased
+### Changed
+- Apply system theme for native look and feel
+
 ## 0.2.1        - 2015-08-03
 ### Added
 - License and Changelog files

@@ -1,3 +1,20 @@
+/**
+ * Copyright (C) MeOr Project
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package main.ui;
 
 import java.awt.EventQueue;
@@ -10,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.UIManager;
 
 /**
  * @author RenJOuS
@@ -18,10 +36,18 @@ import javax.swing.border.EmptyBorder;
  */
 public class About extends JFrame {
 	private static final long serialVersionUID = 1530807439035354347L;
-	private final String VERSION = "0.2.1";
+	private static final String APP_VERSION = "0.2.1";
+	private static final String APP_ICON_PATH = "/resources/meor-icon.png";
+	private static final String APP_LOGO_PATH = "/resources/meor-logo.png";
+	private static final String LICENSE_LOGO_PATH = "/resources/gplv3.png";
 	private JPanel aboutPanel;
 
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Throwable oops) {
+			System.out.println(oops.getMessage());
+		}
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -36,7 +62,7 @@ public class About extends JFrame {
 		setTitle("About MeOr");
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
-				About.class.getResource("/resources/meor-icon.png")));
+				About.class.getResource(APP_ICON_PATH)));
 		setAlwaysOnTop(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 480, 360);
@@ -59,8 +85,7 @@ public class About extends JFrame {
 		JLabel appLogo = new JLabel();
 		appLogo.setHorizontalAlignment(SwingConstants.CENTER);
 		appLogo.setBounds(12, 0, 454, 160);
-		appLogo.setIcon(new ImageIcon(About.class
-				.getResource("/resources/meor-logo.png")));
+		appLogo.setIcon(new ImageIcon(About.class.getResource(APP_LOGO_PATH)));
 		getContentPane().add(appLogo);
 
 		// App name
@@ -71,7 +96,7 @@ public class About extends JFrame {
 		aboutPanel.add(appName);
 
 		// App release version
-		JLabel appVersion = new JLabel("version " + VERSION);
+		JLabel appVersion = new JLabel("version " + APP_VERSION);
 		appVersion.setFont(new Font("SansSerif", Font.PLAIN, 14));
 		appVersion.setHorizontalAlignment(SwingConstants.CENTER);
 		appVersion.setBounds(12, 196, 454, 24);
@@ -104,7 +129,7 @@ public class About extends JFrame {
 		licenseLogo.setLabelFor(aboutPanel);
 		licenseLogo.setBounds(348, 232, 96, 96);
 		licenseLogo.setIcon(new ImageIcon(About.class
-				.getResource("/resources/gplv3.png")));
+				.getResource(LICENSE_LOGO_PATH)));
 		getContentPane().add(licenseLogo);
 	}
 }
