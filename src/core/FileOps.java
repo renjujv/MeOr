@@ -20,33 +20,31 @@ public class FileOps {
 
 	public static final String[] categories = { "Media", "Documents", "Softwares" };
 	public static final String[][] subcategories = {
-			{ "Audio", "Video", "Images", "." },
-			{ "Rich Text", "Spreadsheet", "Presentation", "eBooks", "Web Pages", "." },
-			{ "Windows", "Linux", "Mac", "Android", "." } };
+		{ "Audio", "Video", "Images", "." },
+		{ "Rich Text", "Spreadsheet", "Presentation", "eBooks", "Web Pages", "." },
+		{ "Windows", "Linux", "Mac", "Android", "." } };
 	private static final String[][][] extensions = {
-			{
-				{ "mp3", "aac", "ogg", "flac", "m4a", "wma", "wav", "ape", "." },
-				{ "avi", "mkv", "wmv", "webm", "flv", "mp4", "3gp", "." },
-				{ "jpeg", "jpg", "png", "gif", "." }
-			},
-			{
-				{ "pdf", "doc", "txt", "odt", "." },
-				{ "ppt", "pptx", "odp", "." },
-				{ "xls", "odg", "." },
-				{ "ePub", "." },
-				{ "htm", "html", "xhtml", "mht", "." }
-			},
-			{
-				{ "exe", "msi", "." },
-				{ "deb", "rpm", "run", "mint", "app", "." },
-				{ "app", "." },
-				{ "apk", "." }
-			}
+		{
+			{ "mp3", "aac", "ogg", "flac", "m4a", "wma", "wav", "ape", "." },
+			{ "avi", "mkv", "wmv", "webm", "flv", "mp4", "3gp", "." },
+			{ "jpeg", "jpg", "png", "gif", "." }
+		},
+		{
+			{ "pdf", "doc", "txt", "odt", "." },
+			{ "ppt", "pptx", "odp", "." },
+			{ "xls", "odg", "." },
+			{ "ePub", "." },
+			{ "htm", "html", "xhtml", "mht", "." }
+		},
+		{
+			{ "exe", "msi", "." },
+			{ "deb", "rpm", "run", "mint", "app", "." },
+			{ "app", "." },
+			{ "apk", "." }
+		}
 	};
 
 	private static DataBase database;
-
-
 	/**
 	 * @param FOLDER
 	 *            absolute path of folder to be added

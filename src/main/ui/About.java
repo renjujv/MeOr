@@ -32,20 +32,19 @@ public class About extends JFrame {
 	}
 
 	// Constructor
-	public About() {
+	About() {
 		setTitle("About MeOr");
 		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(
-				About.class.getResource("/resources/meor-icon.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(About.class.getResource("/resources/meor-icon.png")));
 		setAlwaysOnTop(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 480, 360);
-		initUI();
+		buildUI();
 		setElements();
 	}
 
 	// Initialize the panel
-	private final void initUI() {
+	private final void buildUI() {
 		aboutPanel = new JPanel();
 		aboutPanel.setBorder(new EmptyBorder(2, 2, 2, 2));
 		setContentPane(aboutPanel);
