@@ -1,3 +1,19 @@
+/**
+ * Copyright (C) MeOr Project
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package main.ui;
 
 import java.awt.EventQueue;
@@ -20,6 +36,9 @@ import javax.swing.border.EmptyBorder;
 public class About extends JFrame {
 	private final String VERSION = "0.3.1";
 	private JPanel aboutPanel;
+	private static final String APP_ICON_PATH = "/resources/meor_icon.png";
+	private static final String APP_LOGO_PATH = "/resources/meor_logo.png";
+	private static final String LICENSE_LOGO_PATH = "/resources/gplv3.png";
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -35,9 +54,9 @@ public class About extends JFrame {
 	About() {
 		setTitle("About MeOr");
 		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(About.class.getResource("/resources/meor-icon.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(About.class.getResource(APP_ICON_PATH)));
 		setAlwaysOnTop(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 480, 360);
 		buildUI();
 		setElements();
@@ -58,8 +77,7 @@ public class About extends JFrame {
 		JLabel appLogo = new JLabel();
 		appLogo.setHorizontalAlignment(SwingConstants.CENTER);
 		appLogo.setBounds(12, 0, 454, 160);
-		appLogo.setIcon(new ImageIcon(About.class
-				.getResource("/resources/meor-logo.png")));
+		appLogo.setIcon(new ImageIcon(About.class.getResource(APP_LOGO_PATH)));
 		getContentPane().add(appLogo);
 
 		// App name
@@ -102,8 +120,7 @@ public class About extends JFrame {
 		licenseLogo.setHorizontalAlignment(SwingConstants.CENTER);
 		licenseLogo.setLabelFor(aboutPanel);
 		licenseLogo.setBounds(348, 232, 96, 96);
-		licenseLogo.setIcon(new ImageIcon(About.class
-				.getResource("/resources/gplv3.png")));
+		licenseLogo.setIcon(new ImageIcon(About.class.getResource(LICENSE_LOGO_PATH)));
 		getContentPane().add(licenseLogo);
 
 	}
