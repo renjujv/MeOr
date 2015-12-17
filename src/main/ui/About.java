@@ -117,7 +117,7 @@ public class About extends JFrame {
 		aboutPanel.add(copyrightNote);
 
 		// License
-		JLabel licenseName = new JLabel("Licensed under GNU GPLv3");
+		JLabel licenseName = new JLabel("Licensed under GNU GPL");
 		licenseName.setFont(new Font("Dialog", Font.PLAIN, 12));
 		licenseName.setHorizontalAlignment(SwingConstants.CENTER);
 		licenseName.setBounds(12, 286, 454, 20);

@@ -1,52 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   height="16"
-   width="16"
-   version="1.1"
-   id="svg3025"
-   viewBox="-28672 -256 0 1792">
-  <title
-     id="title4137">Search Icon</title>
-  <metadata
-     id="metadata3035">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title>Search Icon</dc:title>
-        <dc:source>https://commons.wikimedia.org/wiki/File:Search_font_awesome.svg</dc:source>
-        <dc:description>Search icon is derived from part of Dave Gandy's Font Awesome</dc:description>
-        <cc:license
-           rdf:resource="http://creativecommons.org/licenses/by-sa/3.0/" />
-      </cc:Work>
-      <cc:License
-         rdf:about="http://creativecommons.org/licenses/by-sa/3.0/">
-        <cc:permits
-           rdf:resource="http://creativecommons.org/ns#Reproduction" />
-        <cc:permits
-           rdf:resource="http://creativecommons.org/ns#Distribution" />
-        <cc:requires
-           rdf:resource="http://creativecommons.org/ns#Notice" />
-        <cc:requires
-           rdf:resource="http://creativecommons.org/ns#Attribution" />
-        <cc:permits
-           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
-        <cc:requires
-           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
-      </cc:License>
-    </rdf:RDF>
-  </metadata>
-  <defs
-     id="defs3033" />
-  <path
-     id="path3029"
-     d="M 11.075345,6.7720739 C 11.150492,4.4767719 9.0642839,2.3920026 6.7673976,2.4670984 4.4705113,2.3920025 2.3843031,4.4767719 2.4594509,6.7720739 2.3843032,9.0673759 4.4705113,11.152145 6.7673976,11.077049 9.0684993,11.148927 11.147272,9.0715885 11.075345,6.7720739 Z m 4.923367,7.9949551 c 0.04833,0.986504 -1.275015,1.63275 -2.00703,0.950421 -1.132461,-1.120631 -2.257813,-2.248525 -3.38752,-3.37197 C 8.1635158,14.104868 4.5713449,13.872864 2.3267808,11.889675 0.01108862,9.9353344 -0.69188401,6.3602352 0.74476876,3.6858306 2.1060277,0.86329082 5.6079615,-0.63786746 8.6013213,0.25918818 11.123574,0.92997203 13.099051,3.1795899 13.461979,5.7583657 13.7186,7.438288 13.331987,9.2157033 12.34465,10.606192 c 1.125866,1.130388 2.26258,2.250418 3.38166,3.387285 0.181892,0.213998 0.275448,0.493899 0.272402,0.773552 z"
-     style="fill:currentColor" />
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="16" width="16" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 16 16">
+ <title>Search Icon</title>
+ <metadata>
+  <rdf:RDF>
+   <cc:Work>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>Search Icon</dc:title>
+    <dc:source>https://commons.wikimedia.org/wiki/File:Search_font_awesome.svg</dc:source>
+    <dc:description>Search Icon is derived from part of Dave Gandy&apos;s Font Awesome</dc:description>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-sa/3.0/"/>
+   </cc:Work>
+   <cc:License rdf:about="http://creativecommons.org/licenses/by-sa/3.0/">
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#ShareAlike"/>
+   </cc:License>
+  </rdf:RDF>
+ </metadata>
+ <circle stroke-width="3" stroke="#000" cy="7" cx="7" r="5.5" fill="none"/>
+ <rect transform="rotate(-45)" height="4.2426" width="2.8284" y="15.556" x="-1.4142"/>
+ <circle cx="14" cy="14" r="1.41"/>
 </svg>

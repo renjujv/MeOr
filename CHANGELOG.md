@@ -6,6 +6,7 @@ loosely based on [keepachangelog.com][keepachangelog] guideline.
 ## Unreleased   - Unreleased
 ### Changed
 - Apply system theme for native look and feel
+- Optimize icons and fix license version
 
 ## 0.2.1        - 2015-08-03
 ### Added
