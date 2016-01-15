@@ -13,7 +13,7 @@
      </cc:Agent>
     </dc:creator>
     <dc:description>Official icon for MeOr media organizer app https://github.com/HEXcube/MeOr</dc:description>
-    <cc:license rdf:resource="https://creativecommons.org/licenses/by-sa/4.0/"/>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-sa/3.0/"/>
    </cc:Work>
   </rdf:RDF>
  </metadata>
