@@ -26,21 +26,27 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.UIManager;
 
 /**
  * @author RenJOuS
  * 
  * 
  */
-@SuppressWarnings("serial")
 public class About extends JFrame {
-	private final String VERSION = "0.3.1";
-	private JPanel aboutPanel;
-	private static final String APP_ICON_PATH = "/resources/meor_icon.png";
-	private static final String APP_LOGO_PATH = "/resources/meor_logo.png";
+	//private final String VERSION = "0.3.1";
+	private static final long serialVersionUID = 1530807439035354347L;
+	private static final String APP_VERSION = "0.2.1";
+	private static final String APP_ICON_PATH = "/resources/meor-icon.png";
+	private static final String APP_LOGO_PATH = "/resources/meor-logo.png";
 	private static final String LICENSE_LOGO_PATH = "/resources/gplv3.png";
-
+	private JPanel aboutPanel;
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Throwable oops) {
+			System.out.println(oops.getMessage());
+		}
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -88,7 +94,7 @@ public class About extends JFrame {
 		aboutPanel.add(appName);
 
 		// App release version
-		JLabel appVersion = new JLabel("version " + VERSION);
+		JLabel appVersion = new JLabel("version " + APP_VERSION);
 		appVersion.setFont(new Font("SansSerif", Font.PLAIN, 14));
 		appVersion.setHorizontalAlignment(SwingConstants.CENTER);
 		appVersion.setBounds(12, 196, 454, 24);
@@ -109,7 +115,7 @@ public class About extends JFrame {
 		aboutPanel.add(copyrightNote);
 
 		// License
-		JLabel licenseName = new JLabel("Licensed under GNU GPLv3");
+		JLabel licenseName = new JLabel("Licensed under GNU GPL");
 		licenseName.setFont(new Font("Dialog", Font.PLAIN, 12));
 		licenseName.setHorizontalAlignment(SwingConstants.CENTER);
 		licenseName.setBounds(12, 286, 454, 20);

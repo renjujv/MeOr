@@ -17,20 +17,19 @@
 package main.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 import javax.swing.Box;
-import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -42,15 +41,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -58,30 +54,33 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import main.fileio.FileChooser;
+import javax.swing.UIManager;
 
-import javax.swing.border.BevelBorder;
-
-import java.awt.Color;
-import javax.swing.border.TitledBorder;
 /**
  * @author RenJOuS
  * 
  */
 @SuppressWarnings("serial")
-//GUI Class MainFrame
-
-class MainWindow extends JFrame{
-	private JMenuBar menuBar;
-	private JList<String> itemsList;
-	private DefaultListModel<String> myListModel = new DefaultListModel<String>();
+// GUI Class MainFrame
+class MainWindow extends JFrame {
+	private JTextField searchField;
+	private JButton btnGo;
+	private JLabel lblSearch;
+	private JTree categtree;
+	private DefaultListModel<Object> mylistmodel = new DefaultListModel<Object>();
+	private JPanel itemspanel;
 	private String[] values;
-	private static final String APP_ICON_PATH = "/resources/meor_icon.png";
-	private static final String SEARCH_LOGO = "/resources/search.png";
+	private static final String APP_ICON_PATH = "/resources/meor-icon.png";
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
-			public void run() {
+			@Override
+			public void run() {// exception handling for MainWindow
 				try {
 					MainWindow GUI = new MainWindow();
 					GUI.setVisible(true);
@@ -92,241 +91,218 @@ class MainWindow extends JFrame{
 			}
 		});
 	}
-	//Constructor
-	MainWindow() {
+
+	// Constructor
+	MainWindow() throws Exception {
+
 		try {
-			setIconImage(Toolkit.getDefaultToolkit().getImage(MainWindow.class.getResource(APP_ICON_PATH)));
+			setIconImage(Toolkit.getDefaultToolkit().getImage(
+					MainWindow.class.getResource(APP_ICON_PATH)));
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		setTitle("MeOr - Media Organiser");
-		setExtendedState(Frame.MAXIMIZED_BOTH);		//tell me if this code makes the MainWindowLegacy start maximized in your system
+		setSize(800, 600);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLooknFeel("Nimbus");						//set LnF before adding components
-		setContentPane();
+
 		setMenuBar();
-		setSearchBar();
-		setCategoryPanel();
-		setItemsPanel();
-		setStatusBar();
-		pack();										//rectified collapse of window on restore down
+		setStatBar();
+		// setThemeSel();
+		setCategpanel();
+		setItemspanel();
 	}
 
-	private void setContentPane() {
-		JPanel contentPane = new JPanel(new BorderLayout());
-		setContentPane(contentPane);
-	}
-	private void setMenuBar(){
-		menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
+	private void setMenuBar() {
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setSize(getWidth(), 25);
+		getContentPane().add(menuBar, BorderLayout.NORTH);
 
 		JMenu fileMenu = new JMenu("File");
 		menuBar.add(fileMenu);
-		//set Mnemonic 
-		JMenuItem refreshMenuItem = new JMenuItem("Refresh", KeyEvent.VK_R);
-		fileMenu.add(refreshMenuItem);
-		refreshMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0)
-			{
-				SwingUtilities.updateComponentTreeUI(getRootPane());
+
+		JMenuItem refreshmnItem = new JMenuItem("Refresh");
+		fileMenu.add(refreshmnItem);
+		refreshmnItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				mylistmodel.lastElement();
 			}
 		});
 
-		JMenuItem importMenuItem = new JMenuItem("Import", KeyEvent.VK_I);
-		fileMenu.add(importMenuItem);
-		importMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0)
-			{
+		JMenuItem importmnItem = new JMenuItem("Import");
+		importmnItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
 				FileChooser selfiles = new FileChooser();
 				selfiles.setVisible(true);
 				try {
-					for(int i=0;i<values.length;i++)
-						myListModel.addElement(values[i]);
+					for (int i = 0; i < values.length; i++)
+						mylistmodel.addElement(values[i]);
+					//
+					// Thread t1 = new Thread(new Runnable() {
+					// public void run() {
+					// for(int i=0;i<values.length;i++)
+					// mylistmodel.addElement(values[i]);
+					// }
+					// });
+					// t1.start();
+
 				} catch (Exception e) {
 					// Catch null pointer exception
 					System.out.println(e.getMessage());
 				}
 			}
 		});
-
-		JMenuItem clearMenuItem = new JMenuItem("Clear list", KeyEvent.VK_C);
-		fileMenu.add(clearMenuItem);
-		clearMenuItem.addActionListener(new ActionListener() {
+		fileMenu.add(importmnItem);
+		JMenuItem clearlistmnItem = new JMenuItem("Clear list");
+		fileMenu.add(clearlistmnItem);
+		clearlistmnItem.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				myListModel.removeAllElements();
+				mylistmodel.removeAllElements();
 			}
 		});
 
-		JMenuItem exitMenuItem = new JMenuItem("Exit", KeyEvent.VK_E);
-		fileMenu.add(exitMenuItem);
-		exitMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0)
-			{
+		JMenuItem exitmnItem = new JMenuItem("Exit");
+		fileMenu.add(exitmnItem);
+		exitmnItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
 			}
 		});
 
-		JMenu themeMenu = new JMenu("Theme");
-		menuBar.add(themeMenu);
-		//ButtonGroup for grouping and adding exclusivity for themes RadioButtonMenuItem
-		ButtonGroup themeMenuGroup = new ButtonGroup();
-
-		JRadioButtonMenuItem themeMenuItem1 = new JRadioButtonMenuItem("Nimbus");
-		themeMenuItem1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-					try {
-						UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-						SwingUtilities.updateComponentTreeUI(getContentPane());
-						SwingUtilities.updateComponentTreeUI(getJMenuBar());
-					} catch (ClassNotFoundException | InstantiationException
-							| IllegalAccessException
-							| UnsupportedLookAndFeelException e1) {
-						e1.printStackTrace();
-					}
-			}
-		});
-		themeMenuGroup.add(themeMenuItem1);
-		themeMenu.add(themeMenuItem1);
-
-		JRadioButtonMenuItem themeMenuItem2 = new JRadioButtonMenuItem("Motif");
-		themeMenuItem2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-					SwingUtilities.updateComponentTreeUI(getContentPane());
-					SwingUtilities.updateComponentTreeUI(getJMenuBar());
-				} catch (ClassNotFoundException | InstantiationException
-						| IllegalAccessException
-						| UnsupportedLookAndFeelException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-		themeMenuGroup.add(themeMenuItem2);
-		themeMenu.add(themeMenuItem2);
-
-		JRadioButtonMenuItem themeMenuItem3 = new JRadioButtonMenuItem("System");
-		themeMenuItem3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-					SwingUtilities.updateComponentTreeUI(getContentPane());
-					SwingUtilities.updateComponentTreeUI(getJMenuBar());
-				} catch (ClassNotFoundException | InstantiationException
-						| IllegalAccessException
-						| UnsupportedLookAndFeelException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-		themeMenuGroup.add(themeMenuItem3);
-		themeMenu.add(themeMenuItem3);
-		JRadioButtonMenuItem themeMenuItem4 = new JRadioButtonMenuItem("Cross-Platform (Metal)");
-		themeMenuItem4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-					SwingUtilities.updateComponentTreeUI(getContentPane());
-					SwingUtilities.updateComponentTreeUI(getJMenuBar());
-				} catch (ClassNotFoundException | InstantiationException
-						| IllegalAccessException
-						| UnsupportedLookAndFeelException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-		themeMenuGroup.add(themeMenuItem4);
-		themeMenu.add(themeMenuItem4);
-		//set Nimbus theme selected by default
-		themeMenuItem1.setSelected(true);
-
 		JMenu helpMenu = new JMenu("Help");
 		menuBar.add(helpMenu);
 
-		JMenuItem aboutMenuItem = new JMenuItem("About");
-		helpMenu.add(aboutMenuItem);
-		aboutMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0)
-			{
+		JMenuItem aboutmnItem = new JMenuItem("About");
+		helpMenu.add(aboutmnItem);
+		aboutmnItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
 				About help = new About();
 				help.setVisible(true);
+				help.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			}
 		});
-	}
 
-	private void setSearchBar() {
-			menuBar.add(Box.createHorizontalStrut(400));		//For spacing between MenuItems
-			JLabel searchLabel = new JLabel("Search");
-			try {
-				searchLabel.setIcon(new ImageIcon(MainWindow.class.getResource(SEARCH_LOGO)));
-			} catch (Exception e1) {
-				e1.printStackTrace();
+		menuBar.add(Box.createRigidArea(new Dimension(400, 5)));
+
+		lblSearch = new JLabel("Search");
+		lblSearch.setVisible(true);
+		lblSearch.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblSearch.setIcon(new ImageIcon(MainWindow.class
+				.getResource("/resources/search.png")));
+		menuBar.add(lblSearch);
+
+		searchField = new JTextField();
+		searchField.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				searchField.setText(null);
 			}
-			menuBar.add(searchLabel);
+		});
+		searchField.setToolTipText("Search");
+		searchField.setText("Enter title");
+		// searchField.setHorizontalAlignment(SwingConstants.LEFT);
+		menuBar.add(searchField);
+		searchField.setColumns(5);
 
-			JTextField searchField = new JTextField(5);
-			searchField.setToolTipText("Enter search text and press Go");
-			searchField.setText("Enter text to search");
-			menuBar.add(searchField);
-			searchField.addFocusListener(new FocusAdapter() {
-				public void focusGained(FocusEvent e) {
-					searchField.setText(null);				//Clear field on selection
-					searchField.setCaretPosition(0);		//set caret position to beginning of field
-				}
-			});
+		btnGo = new JButton("Go");
+		btnGo.setVisible(true);
+		btnGo.setHorizontalAlignment(SwingConstants.RIGHT);
+		btnGo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(values[0]);
+				// for(int i=0;i<values.length;i++){
+				// mylistmodel.addElement(values[i]);
+				// }
 
-			JButton searchButton = new JButton("Go");
-			searchButton.setToolTipText("Enter text and Click here");
-			menuBar.add(searchButton);
-			searchButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if(myListModel.contains(searchField.getText())) {
-			            int index = myListModel.indexOf(searchField.getText());
-			            System.out.println(" found at index " + index);
-			        } else {
-			        	System.out.println(values[0]);
-			        }
-				}
-			});
-	}
-
-	private void setStatusBar(){
-		JPanel statusBar = new JPanel(new BorderLayout());
-		statusBar.setName("StatusBar");
-		getContentPane().add(statusBar, BorderLayout.SOUTH);
-		JProgressBar progressBar = new JProgressBar(0,100);
-		statusBar.add(progressBar,BorderLayout.EAST);
-
-	}
-
-	private void setLooknFeel(String selectedtheme) {
-		try {
-			for(LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()){
-				if(selectedtheme.equals(info.getName())){
-					UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
 			}
-		}
-		catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException | NullPointerException e) {
-			e.printStackTrace();
-		}
+		});
+		menuBar.add(btnGo);
 	}
 
-	private void setCategoryPanel(){
-		JPanel categoryPanel = new JPanel();
-		categoryPanel.setBorder(new BevelBorder(BevelBorder.RAISED, new Color(0, 139, 139), new Color(0, 139, 139), new Color(0, 139, 139), new Color(0, 139, 139)));
-		categoryPanel.setLayout(new BorderLayout(0, 0));
-		getContentPane().add(categoryPanel,BorderLayout.WEST);
-		JScrollPane categoryScrollPane = new JScrollPane();
-		categoryScrollPane.setViewportBorder(null);
-		categoryPanel.add(categoryScrollPane);
+	private void setStatBar() {
+		JPanel statBar = new JPanel(new BorderLayout());
+		statBar.setName("StatusBar");
+		getContentPane().add(statBar, BorderLayout.SOUTH);
+		JProgressBar progressBar = new JProgressBar(0, 100);
+		statBar.add(progressBar, BorderLayout.EAST);
+
+	}
+
+	// commented theme selector for future implementation!!
+	{
+		// public void setThemeSel(){
+		// // theme selector
+		// JLabel lblTheme = new JLabel("Theme");
+		// lblTheme.setVerticalAlignment(SwingConstants.TOP);
+		// lblTheme.setHorizontalAlignment(SwingConstants.TRAILING);
+		// menuBar.add(lblTheme);
+		//
+		// JRadioButton rdbtnnative = new JRadioButton("Native");
+		// rdbtnnative.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent arg0)
+		// {
+		// try {
+		// UIManager.setLookAndFeel("Nimbus");
+		// }
+		// catch (ClassNotFoundException | InstantiationException
+		// | IllegalAccessException | UnsupportedLookAndFeelException e) {
+		// System.out.println(e.getMessage());
+		// }
+		// SwingUtilities.updateComponentTreeUI(getComponent(4));
+		// ((Window) getContentPane()).pack();
+		// }
+		// });
+		// rdbtnnative.setSelected(true);
+		// rdbtnnative.setVerticalAlignment(SwingConstants.TOP);
+		// rdbtnnative.setHorizontalAlignment(SwingConstants.TRAILING);
+		// buttonGroup.add(rdbtnnative);
+		// menuBar.add(rdbtnnative);
+		//
+		// JRadioButton rdbtncrossplat = new JRadioButton("Cross Platform");
+		// rdbtncrossplat.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent arg0)
+		// {
+		// try {
+		// UIManager.setLookAndFeel("Windows");
+		// }
+		// catch (ClassNotFoundException | InstantiationException
+		// | IllegalAccessException | UnsupportedLookAndFeelException e) {
+		// System.out.println(e.getMessage());
+		// }
+		// SwingUtilities.updateComponentTreeUI(getContentPane());
+		// ((Window) getContentPane()).pack();
+		// }
+		// });
+		// rdbtnnative.setVerticalAlignment(SwingConstants.TOP);
+		// rdbtncrossplat.setHorizontalAlignment(SwingConstants.TRAILING);
+		// buttonGroup.add(rdbtncrossplat);
+		// menuBar.add(rdbtncrossplat);
+		// // theme selector ends
+		// }
+	}
+
+	private void setCategpanel() {
+		final JPanel categpanel = new JPanel();
+		categpanel.setLayout(new BorderLayout(0, 0));
+		getContentPane().add(categpanel, BorderLayout.WEST);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setViewportBorder(null);
+		scrollPane.setPreferredSize(new Dimension(150, getHeight()));
+		categpanel.add(scrollPane);
 
 		DefaultMutableTreeNode top = new DefaultMutableTreeNode("Categories");
+		categtree = new JTree(top);
+		categtree.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		DefaultMutableTreeNode media = new DefaultMutableTreeNode("Media");
-		DefaultMutableTreeNode software = new DefaultMutableTreeNode("Softwares");
-		DefaultMutableTreeNode document = new DefaultMutableTreeNode("Documents");
+		DefaultMutableTreeNode software = new DefaultMutableTreeNode(
+				"Softwares");
+		DefaultMutableTreeNode document = new DefaultMutableTreeNode(
+				"Documents");
 		DefaultMutableTreeNode audio = new DefaultMutableTreeNode("Audio");
 		DefaultMutableTreeNode video = new DefaultMutableTreeNode("Video");
 		DefaultMutableTreeNode windows = new DefaultMutableTreeNode("Windows");
@@ -334,10 +310,12 @@ class MainWindow extends JFrame{
 		DefaultMutableTreeNode macintosh = new DefaultMutableTreeNode("Mac");
 		DefaultMutableTreeNode android = new DefaultMutableTreeNode("Android");
 		DefaultMutableTreeNode other = new DefaultMutableTreeNode("Others");
-		DefaultMutableTreeNode spreadsheet = new DefaultMutableTreeNode("Spreadsheets");
+		DefaultMutableTreeNode spreadsheet = new DefaultMutableTreeNode(
+				"Spreadsheets");
 		DefaultMutableTreeNode ebook = new DefaultMutableTreeNode("eBooks");
 		DefaultMutableTreeNode text = new DefaultMutableTreeNode("Rich Text");
-		DefaultMutableTreeNode presentation = new DefaultMutableTreeNode("Presentations");
+		DefaultMutableTreeNode presentation = new DefaultMutableTreeNode(
+				"Presentations");
 		DefaultMutableTreeNode pdf = new DefaultMutableTreeNode("Pdfs");
 		top.add(media);
 		top.add(software);
@@ -354,73 +332,96 @@ class MainWindow extends JFrame{
 		document.add(text);
 		document.add(presentation);
 		document.add(pdf);
-		JTree categoryTree = new JTree(top);
-		categoryTree.setVisibleRowCount(40);
-		categoryScrollPane.setViewportView(categoryTree);
+		// categtree.setBorder(new LineBorder(new Color(0, 0, 0)));
+		scrollPane.setViewportView(categtree);
 		// tree in categories panel ends
-		//tree event listeners commence here
-		categoryTree.addTreeExpansionListener(new TreeExpansionListener() {
+		// tree event listeners commence here
+		categtree.addTreeExpansionListener(new TreeExpansionListener() {
+			@Override
 			public void treeCollapsed(TreeExpansionEvent event) {
 				System.out.println(event.getPath());
 			}
+
+			@Override
 			public void treeExpanded(TreeExpansionEvent event) {
 				System.out.println(event.getPath());
 			}
 		});
 
-		categoryTree.addTreeSelectionListener(new TreeSelectionListener() {
-			public void valueChanged(TreeSelectionEvent tse)
-			{
-				String selectedCat= String.valueOf(tse.getPath());
-				int lsindex=selectedCat.lastIndexOf(", ");
-				selectedCat=selectedCat.substring(lsindex+2,selectedCat.length()-1);
+		categtree.addTreeSelectionListener(new TreeSelectionListener() {
+			@Override
+			public void valueChanged(TreeSelectionEvent tse) {
+				String selectedCat = String.valueOf(tse.getPath());
+				int lsindex = selectedCat.lastIndexOf(", ");
+				selectedCat = selectedCat.substring(lsindex + 2,
+						selectedCat.length() - 1);
 				System.out.println(selectedCat);
 
 				try {
 					values = core.FileOps.getFiles(selectedCat);
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					System.out.println(e.getMessage());
 				}
-				myListModel.removeAllElements();
-				for(int i=0;i<values.length;i++)
-					myListModel.addElement(values[i]);
+				mylistmodel.removeAllElements();
+				for (int i = 0; i < values.length; i++)
+					mylistmodel.addElement(values[i]);
 
 			}
 		});
-		//tree event listener ends here
+		// tree event listener ends here
 	}
 
-	private void setItemsPanel(){
-		JPanel itemsPanel = new JPanel();
-		itemsPanel.setBorder(new BevelBorder(BevelBorder.RAISED, new Color(0, 139, 139), new Color(0, 139, 139), new Color(0, 139, 139), new Color(0, 139, 139)));
-		itemsPanel.setLayout(new BorderLayout(0, 0));
-		getContentPane().add(itemsPanel, BorderLayout.CENTER);
+	private void setItemspanel() {
+		itemspanel = new JPanel();
+		itemspanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		itemspanel.setLayout(new BorderLayout(0, 0));
+		getContentPane().add(itemspanel, BorderLayout.CENTER);
 
-		JScrollPane itemsScrollPane = new JScrollPane();
-		itemsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		itemsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		itemsPanel.add(itemsScrollPane);
-		itemsList = new JList<String>();
-		itemsList.setBorder(new TitledBorder(null, "FILES", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 139, 139)));
-		itemsList.setVisibleRowCount(40);
-		itemsList.setLayoutOrientation(JList.VERTICAL);
-		itemsList.setModel(myListModel);
-		itemsList.addMouseListener(new MouseAdapter() {
+		JScrollPane itemscrollPane = new JScrollPane();
+		itemscrollPane
+				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		itemscrollPane
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		itemspanel.add(itemscrollPane);
+		final JList<Object> list = new JList<Object>();
+		/*
+		 * list.addPropertyChangeListener(new PropertyChangeListener() { public
+		 * void propertyChange(PropertyChangeEvent evt) {
+		 * //mylistmodel.addElement(); //mylistmodel.addElement(values);
+		 * 
+		 * } });
+		 */list.setLayoutOrientation(JList.VERTICAL);
+		list.setVisibleRowCount(30);
+		list.setModel(mylistmodel);
+
+		// {
+		// // String[] values = new String[] {"fg", "fgu", "ghg"};
+		//
+		// String[] values = gluecode.FileOps.getFiles("Music");
+		// public int getSize()
+		// {
+		// return values.length;
+		// }
+		// public Object getElementAt(int index)
+		// {
+		// return values[index];
+		// }
+		// });
+		list.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e) {
-				int cc=e.getClickCount();
-				if(cc==2){
-					String selected= itemsList.getSelectedValue().toString();
+				int cc = e.getClickCount();
+				if (cc == 2) {
+					String selected = list.getSelectedValue().toString();
 					System.out.println("Mouse clicked on list");
 					try {
 						main.fileio.OpenFile.openFile(selected);
-					}
-					catch (IOException e1) {
+					} catch (IOException e1) {
 						System.out.println(e1.getMessage());
 					}
 				}
 			}
 		});
-		itemsScrollPane.setViewportView(itemsList);
+		itemscrollPane.setViewportView(list);
 	}
 }

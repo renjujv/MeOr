@@ -42,8 +42,7 @@ public class OpenFile {
 		try {
 			openFile(System.getProperty("user.dir") + "/README.md");
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 	}
-
 }

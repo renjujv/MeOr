@@ -87,7 +87,7 @@ public class FileOps {
 			try {
 				dbase.insert(aFile, aAttrs.size());
 			} catch (Exception ignore) {
-				System.out.println("ignore.getMessage()");
+				System.out.println(ignore.getMessage());
 			}
 			return FileVisitResult.CONTINUE;
 		}

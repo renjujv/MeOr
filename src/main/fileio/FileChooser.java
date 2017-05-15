@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package main.fileio;
 
 import java.awt.EventQueue;
@@ -41,7 +42,7 @@ public class FileChooser extends JFileChooser {
 					FileChooser chooser = new FileChooser();
 					chooser.setVisible(true);
 				} catch (Exception e) {
-					// e.printStackTrace();
+					System.out.println(e.getMessage());
 				}
 			}
 		});
@@ -67,7 +68,7 @@ public class FileChooser extends JFileChooser {
 			try {
 				core.FileOps.addFolder(getSelectedFile().getAbsolutePath());
 			} catch (Exception e) {
-				// e.printStackTrace();
+				System.out.println(e.getMessage());
 			}
 		} else {
 			System.out.println("No Selection ");
