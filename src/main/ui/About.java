@@ -25,27 +25,26 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
+import javax.swing.border.EmptyBorder;
 
 /**
  * @author RenJOuS
  * 
  * 
  */
+@SuppressWarnings("serial")
 public class About extends JFrame {
-	//private final String VERSION = "0.3.1";
-	private static final long serialVersionUID = 1530807439035354347L;
-	private static final String APP_VERSION = "0.2.1";
 	private static final String APP_ICON_PATH = "/resources/meor-icon.png";
 	private static final String APP_LOGO_PATH = "/resources/meor-logo.png";
+	private static final String APP_VERSION = "0.5";
 	private static final String LICENSE_LOGO_PATH = "/resources/gplv3.png";
-	private JPanel aboutPanel;
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Throwable oops) {
-			System.out.println(oops.getMessage());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -55,6 +54,7 @@ public class About extends JFrame {
 			}
 		});
 	}
+	private JPanel aboutPanel;
 
 	// Constructor
 	About() {
@@ -62,7 +62,7 @@ public class About extends JFrame {
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(About.class.getResource(APP_ICON_PATH)));
 		setAlwaysOnTop(true);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 480, 360);
 		buildUI();
 		setElements();
@@ -108,7 +108,7 @@ public class About extends JFrame {
 		aboutPanel.add(appDescription);
 
 		// Copyright note
-		JLabel copyrightNote = new JLabel("Â© MeOr Project");
+		JLabel copyrightNote = new JLabel("© MeOr Project");
 		copyrightNote.setFont(new Font("Dialog", Font.PLAIN, 12));
 		copyrightNote.setHorizontalAlignment(SwingConstants.CENTER);
 		copyrightNote.setBounds(12, 264, 454, 20);
