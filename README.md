@@ -15,6 +15,7 @@ MeOr is fully open source with source code licensed under [GNU General Public Li
 ![GPLv3 logo][GPL-logo]
 
 ====================
+
 [logo]: src/resources/meor-logo.png  "MeOr logo"
 [GPL]: https://www.gnu.org/licenses/gpl-3.0.en.html  "More info on GNU GPL"
 [GPL-logo]: src/resources/gplv3.png "GPLv3 logo"
