@@ -11,15 +11,10 @@ Download the latest jar package from [releases][download]
 MeOr is developed in Java 7 using Eclipse IDE. You'll most likely need the same setup for building MeOr.
 
 ### LICENSE
-<<<<<<< HEAD
-MeOr is fully open source with source code licensed under GNU General Public License version 3
-![GPLv3 logo][gpl]
-=======
-MeOr is fully open source with source code licensed under [GNU General Public License][GPL]
-
+MeOr is fully open source with source code licensed under [GNU General Public License 3][GPL]
 ![GPLv3 logo][GPL-logo]
+=======
 
->>>>>>> refs/heads/rohan
 
 [logo]: src/resources/meor-logo.png  "MeOr logo"
 [GPL]: https://www.gnu.org/licenses/gpl-3.0.en.html  "More info on GNU GPL"
