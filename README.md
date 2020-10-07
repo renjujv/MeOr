@@ -20,7 +20,7 @@ MeOr is developed using Java 7 on Eclipse IDE. You'll most likely need the same 
 
 - Search icon is derived from [Dave Gandy's Font Awesome search icon](https://commons.wikimedia.org/wiki/File:Search_font_awesome.svg) licensed under [Creative Commons Attribution-ShareAlike 3.0 Unported License][CC-BY-SA3]
 
-The GPLv3 license logo is extracted from [Christian Candena's work](https://gnu.org/graphics/license-logos-by-christian-candena-cc-by.svg) licensed under [Creative Commons Attribution 3.0 Unported License][CC-BY3]
+- The GPLv3 license logo is extracted from [Christian Candena's work](https://gnu.org/graphics/license-logos-by-christian-candena-cc-by.svg) licensed under [Creative Commons Attribution 3.0 Unported License][CC-BY3]
 
 - MeOr uses the 3rd party library [SQLite JDBC Driver](https://github.com/xerial/sqlite-jdbc) licensed under [Apache License 2.0][APACHE]
 
