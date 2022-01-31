@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package main.fileio;
+package io.github.renjujv.meor.fileio;
 
 import java.awt.Desktop;
 import java.io.File;

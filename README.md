@@ -1,11 +1,11 @@
 MeOr Media Organizer
 ====================
 ![MeOr logo][logo]
-
-MeOr aims to be an easy to use app for organizing your media collection. Part of academic mini project for Cochin University Bachelors Degree course.
+MeOr aims to be an easy to use app for organizing your media collection. 
+Part of academic mini project for Cochin University Bachelors Degree course.
 
 ### HOW TO BUILD
-MeOr is developed using Java 7 on Eclipse IDE. You'll most likely need the same setup for building MeOr.
+MeOr is based on Java SE 1.7. You'll need the same environment for building MeOr.
 
 ### CREDITS
 - Renju Jose
@@ -14,16 +14,23 @@ MeOr is developed using Java 7 on Eclipse IDE. You'll most likely need the same 
 - Muhammad Rafeek
 
 ### LICENSE
+- Except where otherwise noted, all original content here are released under [GNU General Public License][GPL]. 
+However, part of the work here are derived from other open source projects and as a result follow 
+the licenses of their original sources.
 
-- Except where otherwise noted, all original content here are released under [GNU General Public License][GPL]. However, part of the work here are derived from other open source projects and as a result follow the licenses of their original sources.
+- MeOr logo and icon designed by Rohan "HEXcube" Villoth are 
+licensed under [Creative Commons Attribution-ShareAlike International License][CC-BY-SA]
 
-- MeOr logo and icon designed by Rohan "HEXcube" Villoth are licensed under [Creative Commons Attribution-ShareAlike International License][CC-BY-SA]
+- Search icon is derived from 
+[Dave Gandy's Font Awesome search icon](https://commons.wikimedia.org/wiki/File:Search_font_awesome.svg) 
+licensed under [Creative Commons Attribution-ShareAlike 3.0 Unported License][CC-BY-SA3]
 
-- Search icon is derived from [Dave Gandy's Font Awesome search icon](https://commons.wikimedia.org/wiki/File:Search_font_awesome.svg) licensed under [Creative Commons Attribution-ShareAlike 3.0 Unported License][CC-BY-SA3]
+- The GPLv3 license logo is extracted from
+[Christian Candena's work](https://gnu.org/graphics/license-logos-by-christian-candena-cc-by.svg) 
+licensed under [Creative Commons Attribution 3.0 Unported License][CC-BY3]
 
-- The GPLv3 license logo is extracted from [Christian Candena's work](https://gnu.org/graphics/license-logos-by-christian-candena-cc-by.svg) licensed under [Creative Commons Attribution 3.0 Unported License][CC-BY3]
-
-- MeOr uses the 3rd party library [SQLite JDBC Driver](https://github.com/xerial/sqlite-jdbc) licensed under [Apache License 2.0][APACHE]
+- MeOr uses the 3rd party library [SQLite JDBC Driver](https://github.com/xerial/sqlite-jdbc) 
+licensed under [Apache License 2.0][APACHE]
 
 ![GPLv3 logo][GPL-logo]
 

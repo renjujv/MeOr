@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package main.ui;
+package io.github.renjujv.meor.ui;
 
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -36,10 +36,10 @@ import javax.swing.border.EmptyBorder;
  */
 @SuppressWarnings("serial")
 public class About extends JFrame {
-	private static final String APP_ICON_PATH = "/resources/meor-icon.png";
-	private static final String APP_LOGO_PATH = "/resources/meor-logo.png";
+	private static final String APP_ICON_PATH = "/meor-icon.png";
+	private static final String APP_LOGO_PATH = "/meor-logo.png";
 	private static final String APP_VERSION = "0.5";
-	private static final String LICENSE_LOGO_PATH = "/resources/gplv3.png";
+	private static final String LICENSE_LOGO_PATH = "/gplv3.png";
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -108,7 +108,7 @@ public class About extends JFrame {
 		aboutPanel.add(appDescription);
 
 		// Copyright note
-		JLabel copyrightNote = new JLabel("© MeOr Project");
+		JLabel copyrightNote = new JLabel("ï¿½ MeOr Project");
 		copyrightNote.setFont(new Font("Dialog", Font.PLAIN, 12));
 		copyrightNote.setHorizontalAlignment(SwingConstants.CENTER);
 		copyrightNote.setBounds(12, 264, 454, 20);

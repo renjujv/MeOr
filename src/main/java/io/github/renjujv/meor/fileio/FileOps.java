@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package core;
+package io.github.renjujv.meor.fileio;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -23,10 +23,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import database.DataBase;
+import io.github.renjujv.meor.database.DataBase;
 
 /**
  * @author HEXcube
@@ -78,7 +79,7 @@ public class FileOps {
 		private DataBase dbase = new DataBase();
 
 		ProcessFile() throws Exception {
-			dbase.create();
+//			dbase.create();
 		}
 
 		@Override
@@ -92,7 +93,7 @@ public class FileOps {
 			return FileVisitResult.CONTINUE;
 		}
 
-		protected void finalize() {
+		protected void finalize() throws SQLException {
 			dbase.closeConnection();
 		}
 	}

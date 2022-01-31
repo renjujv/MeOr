@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package main.fileio;
+package io.github.renjujv.meor.fileio;
 
 import java.awt.EventQueue;
 import javax.swing.JFileChooser;
@@ -66,7 +66,7 @@ public class FileChooser extends JFileChooser {
 			System.out.println("getSelectedFile() : "
 					+ getSelectedFile().getAbsolutePath());
 			try {
-				core.FileOps.addFolder(getSelectedFile().getAbsolutePath());
+				FileOps.addFolder(getSelectedFile().getAbsolutePath());
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}

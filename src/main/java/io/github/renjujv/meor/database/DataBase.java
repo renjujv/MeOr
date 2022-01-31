@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package database;
+package io.github.renjujv.meor.database;
 
 import java.nio.file.Path;
 import java.sql.Connection;
@@ -46,7 +46,7 @@ public class DataBase {
 	/**
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
-	 * 
+	 *
 	 */
 	public DataBase() throws ClassNotFoundException, SQLException {
 		// register the driver
@@ -60,7 +60,7 @@ public class DataBase {
 			throw e;
 		}
 
-		// create a database connection
+		// create a main.database connection
 		conn = DriverManager.getConnection(sDbUrl);
 		try {
 			stmt = conn.createStatement();

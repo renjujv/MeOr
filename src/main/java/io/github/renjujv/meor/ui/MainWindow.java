@@ -14,9 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package main.ui;
+package io.github.renjujv.meor.ui;
 
-import main.fileio.FileChooser;
+import io.github.renjujv.meor.fileio.FileChooser;
+import io.github.renjujv.meor.fileio.FileOps;
+import io.github.renjujv.meor.fileio.OpenFile;
 
 import java.awt.Color;
 import java.awt.BorderLayout;
@@ -72,8 +74,8 @@ import javax.swing.border.TitledBorder;
 //GUI Class MainWindow
 
 class MainWindow extends JFrame{
-	private static final String APP_ICON_PATH = "/resources/meor_icon.png";
-	private static final String SEARCH_LOGO = "/resources/search.png";
+	private static final String APP_ICON_PATH = "/meor_icon.png";
+	private static final String SEARCH_LOGO = "/search.png";
 	public static void main(String[] args)
 	{
 		EventQueue.invokeLater(new Runnable() {
@@ -179,7 +181,7 @@ class MainWindow extends JFrame{
 				System.out.println(selectedCat);
 
 				try {
-					values = core.FileOps.getFiles(selectedCat);
+					values = FileOps.getFiles(selectedCat);
 					myListModel.removeAllElements();
 					for(int i=0;i<values.length;i++)
 						myListModel.addElement(values[i]);
@@ -219,7 +221,7 @@ class MainWindow extends JFrame{
 					String selected= itemsList.getSelectedValue().toString();
 					System.out.println("Mouse clicked on list");
 					try {
-						main.fileio.OpenFile.openFile(selected);
+						OpenFile.openFile(selected);
 					}
 					catch (IOException e1) {
 						System.out.println(e1.getMessage());
