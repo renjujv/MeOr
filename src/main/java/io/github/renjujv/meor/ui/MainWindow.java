@@ -22,6 +22,8 @@ import io.github.renjujv.meor.fileio.FileOps;
 import java.awt.event.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
 import java.awt.*;
@@ -38,7 +40,10 @@ class MainWindow extends JFrame{
 	private final Color borderHighlightColor = new Color(0, 139, 139, 126);
 	private final Color borderShadowColor = new Color(0, 79, 79, 121);
 	private final DefaultListModel<String> listModel = new DefaultListModel<>();
-	private String[] fileNamesArray;
+	private String[] allFilesArray;
+	private ArrayList<String> currentFilesArray;
+	private boolean filteredList = false;
+	private String filterQuery = null;
 
 	public static void main(String[] args) {
 		MainWindow mainUI = new MainWindow();
@@ -94,12 +99,12 @@ class MainWindow extends JFrame{
 			int lsindex = selectedCategory.lastIndexOf(", ");
 			selectedCategory = selectedCategory.substring(lsindex+2, selectedCategory.length()-1);
 			try {
-				fileNamesArray = FileOps.getFiles(selectedCategory);
+				currentFilesArray = FileOps.getFiles(selectedCategory, filterQuery);
 				listModel.removeAllElements();
-				for (String value : fileNamesArray) listModel.addElement(value);
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
-				}
+				listModel.addAll(currentFilesArray);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
 		});
 	}
 
@@ -281,7 +286,7 @@ class MainWindow extends JFrame{
 				try {
 					FileChooser filechooser = new FileChooser();
 					filechooser.setVisible(true);					// long process moved to worker thread
-					for (String value : fileNamesArray) listModel.addElement(value);
+					for (String value : currentFilesArray) listModel.addElement(value);
 				} catch (Exception exception) {
 					System.out.println(exception.getMessage());
 				}
@@ -307,23 +312,19 @@ class MainWindow extends JFrame{
 		searchButton.setToolTipText("Enter text and Click here");
 		menuBar.add(searchButton);
 
-		searchField.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				searchField.setText("");
-				searchField.setCaretPosition(0);
+		searchButton.addActionListener( actionEvent -> {
+			filterQuery = searchField.getText();
+			filteredList = !filterQuery.equals("");
+			System.out.println("Filterquery: "+filterQuery);
+			ArrayList<String> listElements = Collections.list(listModel.elements());
+			ArrayList<String> filteredListElements = new ArrayList<>();
+			for(String currentElement: listElements) {
+				if(currentElement.contains(filterQuery)) filteredListElements.add(currentElement);
 			}
-		});
-
-		searchField.addCaretListener(caretListener -> System.out.println(searchField.getText()));
-
-		searchButton.addActionListener(actionEvent -> {
-			int index = listModel.indexOf(searchField.getText());
-			if(index != -1) {
-				System.out.println(" found at index " + index);
-			} else {
-				System.out.println(fileNamesArray[0]);
-			}
+			listModel.removeAllElements();
+			System.out.println("Elements removed..");
+			listModel.addAll(filteredListElements);
+			System.out.println("Filtered Elements added..");
 		});
 	}
 

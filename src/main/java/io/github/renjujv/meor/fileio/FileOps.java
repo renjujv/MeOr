@@ -76,8 +76,8 @@ public class FileOps {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String[] getFiles(String category) throws Exception {
-		List<String> filelist = new ArrayList<String>();
+	public static ArrayList<String> getFiles(String category, String query) throws Exception {
+		ArrayList<String> filelist = new ArrayList<String>();
 		DataBase database = new DataBase();
 		boolean iscategory = false, allcategories = false;
 		if (category.equals("Categories"))
@@ -89,12 +89,12 @@ public class FileOps {
 				if (category.equals(subcategories[i][j]) || iscategory
 						|| allcategories)
 					for (int k = 0; !extensions[i][j][k].equals("."); k++)
-						filelist.addAll(database.retrieve(extensions[i][j][k]));
+						filelist.addAll(database.retrieve(extensions[i][j][k], query));
 			if (iscategory)
 				break;
 		}
 		database.closeConnection();
-		return filelist.toArray(new String[0]);
+		return filelist;
 	}
 
 	public static void openFile(String filepath) throws IOException {

@@ -17,11 +17,7 @@
 package io.github.renjujv.meor.database;
 
 import java.nio.file.Path;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,63 +28,38 @@ import java.util.List;
 
 public class DataBase {
 
-	/**
-	 * The String variables below will produce a legitimate for SqlLite JDBC :
-	 * jdbc:sqlite:FileList.db
-	 */
-	private final String sDriverName = "org.sqlite.JDBC",
-			dbfilename = "FileList.db", sJdbc = "jdbc:sqlite", sDbUrl = sJdbc
-					+ ":" + dbfilename, tablename = "FileList";
-	private int iTimeout = 30;
-	private Connection conn = null;
-	private Statement stmt = null;
+	private final String tablename = "filelist";
+	private Connection connection;
+	private Statement statement;
 
-	/**
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
-	 *
-	 */
-	public DataBase() throws ClassNotFoundException, SQLException {
-		// register the driver
+	public DataBase() {
+		int queryTimeout = 30;
+		String driverName = "org.sqlite.JDBC";
+		String dbfilename = "filelist.db";
+		String sJdbc = "jdbc:sqlite";
+		String sDbUrl = sJdbc + ":" + dbfilename;
 		try {
-			Class.forName(sDriverName);
-		} catch (Exception e) {
-			// connection failed.
-			System.out.println("DriverName: " + sDriverName
-					+ " was not available");
-			System.err.println(e);
-			throw e;
+			Class.forName(driverName);
+			connection = DriverManager.getConnection(sDbUrl);
+			statement = connection.createStatement();
+			statement.setQueryTimeout(queryTimeout);
+		} catch (ClassNotFoundException classNotFoundException) {
+			System.out.println("DriverName: " + driverName + " was not available. More details: "
+					+classNotFoundException.getMessage());
+		} catch (Exception exception) {
+			statement = null;
+			connection = null;
+			exception.printStackTrace();
 		}
-
-		// create a main.database connection
-		conn = DriverManager.getConnection(sDbUrl);
-		try {
-			stmt = conn.createStatement();
-		} catch (Exception e) {
-			try {
-				conn.close();
-			} catch (Exception ignore) {
-			}
-			conn = null;
-		}
-
-		stmt.setQueryTimeout(iTimeout);
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void create() throws Exception {
-
-		try {
-			stmt.executeUpdate("DROP TABLE IF EXISTS " + tablename);
-			stmt.executeUpdate("CREATE TABLE " + tablename
-					+ "(filepath TEXT PRIMARY KEY, size INTEGER)");
-		} finally {
-			try {
-				stmt.close();
-			} catch (Exception ignore) {
-			}
+	public void create() {
+		try{
+			statement.executeUpdate("DROP TABLE IF EXISTS " + tablename);
+			statement.executeUpdate("CREATE TABLE " + tablename + "(filepath TEXT PRIMARY KEY, size INTEGER)");
+			statement.close();
+		} catch (SQLException sqlException){
+			sqlException.printStackTrace();
 		}
 	}
 
@@ -97,78 +68,49 @@ public class DataBase {
 	 * this class in order to close connections externally to the class
 	 */
 	public void closeConnection() {
-		if (stmt != null) {
-			try {
-				stmt.close();
-			} catch (Exception ignore) {
-			}
-		}
-		if (conn != null) {
-			try {
-				conn.close();
-			} catch (Exception ignore) {
-			}
+		try {
+			if (statement != null) statement.close();
+			if (connection != null) connection.close();
+		} catch (SQLException sqlException){
+			sqlException.printStackTrace();
 		}
 	}
 
 	/**
-	 * @param filepath
-	 *            Absolute pathname of the file to be inserted
-	 * @param size
-	 *            Size(in bytes) of the file to be inserted
-	 * @throws Exception
+	 * @param filepath Absolute pathname of the file to be inserted
+	 * @param size Size(in bytes) of the file to be inserted
 	 */
-	public void insert(Path filepath, long size) throws Exception {
+	public void insert(Path filepath, long size) {
 		try {
-			stmt.executeUpdate("INSERT INTO " + tablename + " VALUES('"
-					+ filepath + "','" + size + "')");
-		} finally {
-			try {
-				stmt.close();
-			} catch (Exception ignore) {
-			}
+			statement.executeUpdate("INSERT INTO " + tablename + " VALUES('" + filepath + "','" + size + "')");
+			statement.close();
+		} catch (SQLException sqlException) {
+			sqlException.printStackTrace();
 		}
 	}
 
-	/**
-	 * @param extension
-	 * @return
-	 * @throws Exception
-	 */
-	public List<String> retrieve(String extension) throws Exception {
+	public List<String> retrieve(String extension, String query) {
+		String filteredfileNameQuery = "";
+		if(query != null) filteredfileNameQuery = " WHERE filepath LIKE '%" + query + "%' AND filepath LIKE '%."+extension+"'";
+		else filteredfileNameQuery = " WHERE filepath LIKE '%." + extension + "'";
+		String retrieveFilesQuery = "SELECT filepath from " + tablename + filteredfileNameQuery;
 
-		List<String> filelist = new ArrayList<String>();
-
+		List<String> fileList = new ArrayList<>();
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT filepath from "
-					+ tablename + " WHERE filepath LIKE '%." + extension + "'");
-			try {
-				while (rs.next()) {
-					String sResult = rs.getString("filepath");
-//					System.out.println(sResult);
-					filelist.add(sResult);
-				}
-			} finally {
-				try {
-					rs.close();
-				} catch (Exception ignore) {
-				}
+			ResultSet rs = statement.executeQuery(retrieveFilesQuery);
+			while (rs.next()) {
+				String queryResultfilePath = rs.getString("filepath");
+				fileList.add(queryResultfilePath);
 			}
-		} finally {
-			try {
-				stmt.close();
-			} catch (Exception ignore) {
-			}
+			statement.close();
+		} catch (SQLException sqlException){
+			sqlException.printStackTrace();
 		}
-		return filelist;
+		return fileList;
 	}
 
 	@Override
 	protected void finalize() {
 		closeConnection();
-	}
-
-	public static void main(String[] args) throws Exception {
-		//
 	}
 }
