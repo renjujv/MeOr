@@ -18,16 +18,14 @@
 package io.github.renjujv.meor.fileio;
 
 import java.awt.EventQueue;
+import java.io.File;
 import javax.swing.JFileChooser;
 
 /**
  * @author RenJOuS
  *
  */
-@SuppressWarnings("serial")
 public class FileChooser extends JFileChooser {
-
-	// private JPanel contentPane;
 
 	/**
 	 * Launch the application.
@@ -35,16 +33,9 @@ public class FileChooser extends JFileChooser {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					FileChooser chooser = new FileChooser();
-					chooser.setVisible(true);
-				} catch (Exception e) {
-					System.out.println(e.getMessage());
-				}
-			}
+		EventQueue.invokeLater(() -> {
+			FileChooser chooser = new FileChooser();
+			chooser.setVisible(true);
 		});
 	}
 
@@ -53,9 +44,8 @@ public class FileChooser extends JFileChooser {
 	 * 
 	 * @throws Exception
 	 */
-
 	public FileChooser() {
-		setCurrentDirectory(new java.io.File("."));
+		setCurrentDirectory(new File("."));
 		setDialogTitle("File Import");
 		setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		setAcceptAllFileFilterUsed(false);

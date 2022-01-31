@@ -145,7 +145,7 @@ public class DataBase {
 			try {
 				while (rs.next()) {
 					String sResult = rs.getString("filepath");
-					System.out.println(sResult);
+//					System.out.println(sResult);
 					filelist.add(sResult);
 				}
 			} finally {

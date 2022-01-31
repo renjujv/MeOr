@@ -16,14 +16,11 @@
  */
 package io.github.renjujv.meor.fileio;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +58,6 @@ public class FileOps {
 		}
 	};
 
-	private static DataBase database;
 	/**
 	 * @param FOLDER
 	 *            absolute path of folder to be added
@@ -69,33 +65,6 @@ public class FileOps {
 	 */
 	public static void addFolder(String FOLDER) throws Exception {
 		Files.walkFileTree(Paths.get(FOLDER), new ProcessFile());
-	}
-
-	/**
-	 * @author HEXcube
-	 *
-	 */
-	private static final class ProcessFile extends SimpleFileVisitor<Path> {
-		private DataBase dbase = new DataBase();
-
-		ProcessFile() throws Exception {
-//			dbase.create();
-		}
-
-		@Override
-		public FileVisitResult visitFile(Path aFile, BasicFileAttributes aAttrs)
-				throws IOException {
-			try {
-				dbase.insert(aFile, aAttrs.size());
-			} catch (Exception ignore) {
-				System.out.println(ignore.getMessage());
-			}
-			return FileVisitResult.CONTINUE;
-		}
-
-		protected void finalize() throws SQLException {
-			dbase.closeConnection();
-		}
 	}
 
 	/**
@@ -109,7 +78,7 @@ public class FileOps {
 	 */
 	public static String[] getFiles(String category) throws Exception {
 		List<String> filelist = new ArrayList<String>();
-		database = new DataBase();
+		DataBase database = new DataBase();
 		boolean iscategory = false, allcategories = false;
 		if (category.equals("Categories"))
 			allcategories = true;
@@ -125,8 +94,11 @@ public class FileOps {
 				break;
 		}
 		database.closeConnection();
-		String[] files = filelist.toArray(new String[filelist.size()]);
-		return files;
+		return filelist.toArray(new String[0]);
+	}
+
+	public static void openFile(String filepath) throws IOException {
+		Desktop.getDesktop().open(new File(filepath));
 	}
 
 	/**
@@ -134,8 +106,7 @@ public class FileOps {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		String files[] = getFiles("Categories");
-		for (int i = 0; i < files.length; i++)
-			System.out.println(files[i]);
+//		String[] files = getFiles("Categories");
+//		for (String file : files) System.out.println(file);
 	}
 }
