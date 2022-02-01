@@ -1,6 +1,7 @@
 MeOr Media Organizer
 ====================
 ![MeOr logo][logo]
+
 MeOr aims to be an easy to use app for organizing your media collection. 
 Part of academic mini project for Cochin University Bachelors Degree course.
 
