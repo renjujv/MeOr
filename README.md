@@ -36,9 +36,9 @@ licensed under [Apache License 2.0][APACHE]
 
 ====================
 
-[logo]: src/resources/meor-logo.png "MeOr logo"
+[logo]: src/main/resources/meor-logo.png "MeOr logo"
 [GPL]: https://www.gnu.org/licenses/gpl-3.0.en.html "More info on GNU GPL"
-[GPL-logo]: src/resources/gplv3.png "GPLv3 logo"
+[GPL-logo]: src/main/resources/gplv3.png "GPLv3 logo"
 [CC-BY-SA]: https://creativecommons.org/licenses/by-sa/4.0/ "More info on CC BY-SA 4.0"
 [CC-BY-SA3]: https://creativecommons.org/licenses/by-sa/3.0/ "More info on CC BY-SA 3.0"
 [CC-BY3]: https://creativecommons.org/licenses/by/3.0/ "More info on CC BY 3.0"
