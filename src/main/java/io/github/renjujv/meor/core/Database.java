@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.renjujv.meor.database;
+package io.github.renjujv.meor.core;
 
 import java.nio.file.Path;
 import java.sql.*;
@@ -26,13 +26,13 @@ import java.util.List;
  * 
  */
 
-public class DataBase {
+public class Database {
 
 	private final String tablename = "filelist";
 	private Connection connection;
 	private Statement statement;
 
-	public DataBase() {
+	public Database() {
 		int queryTimeout = 30;
 		String driverName = "org.sqlite.JDBC";
 		String dbfilename = "filelist.db";
@@ -55,12 +55,24 @@ public class DataBase {
 
 	public void create() {
 		try{
-			statement.executeUpdate("DROP TABLE IF EXISTS " + tablename);
+//			statement.executeUpdate("DROP TABLE IF EXISTS " + tablename);
 			statement.executeUpdate("CREATE TABLE " + tablename + "(filepath TEXT PRIMARY KEY, size INTEGER)");
 			statement.close();
 		} catch (SQLException sqlException){
 			sqlException.printStackTrace();
 		}
+	}
+
+	public boolean filelistTableExists(){
+		int result = 0;
+		try{
+			result = statement.executeUpdate("select count() from " + tablename);
+			statement.close();
+
+		} catch (SQLException sqlException){
+			sqlException.printStackTrace();
+		}
+		return (result == 0 || result > 0 );
 	}
 
 	/**
@@ -90,7 +102,7 @@ public class DataBase {
 	}
 
 	public List<String> retrieve(String extension, String query) {
-		String filteredfileNameQuery = "";
+		String filteredfileNameQuery;
 		if(query != null) filteredfileNameQuery = " WHERE filepath LIKE '%" + query + "%' AND filepath LIKE '%."+extension+"'";
 		else filteredfileNameQuery = " WHERE filepath LIKE '%." + extension + "'";
 		String retrieveFilesQuery = "SELECT filepath from " + tablename + filteredfileNameQuery;
@@ -107,10 +119,5 @@ public class DataBase {
 			sqlException.printStackTrace();
 		}
 		return fileList;
-	}
-
-	@Override
-	protected void finalize() {
-		closeConnection();
 	}
 }

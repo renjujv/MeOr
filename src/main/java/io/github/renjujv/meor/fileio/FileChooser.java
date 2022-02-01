@@ -51,17 +51,15 @@ public class FileChooser extends JFileChooser {
 		setAcceptAllFileFilterUsed(false);
 
 		if (showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			System.out.println("getCurrentDirectory(): "
-					+ getCurrentDirectory());
-			System.out.println("getSelectedFile() : "
-					+ getSelectedFile().getAbsolutePath());
+			System.out.println("Current Directory: " + getCurrentDirectory());
+			System.out.println("Selected File : " + getSelectedFile().getAbsolutePath());
 			try {
 				FileOps.addFolder(getSelectedFile().getAbsolutePath());
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
+			} catch (Exception exception) {
+				exception.printStackTrace();
 			}
 		} else {
-			System.out.println("No Selection ");
+			System.out.println("No Selection!");
 		}
 	}
 }

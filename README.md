@@ -6,13 +6,18 @@ MeOr aims to be an easy to use app for organizing your media collection.
 Part of academic mini project for Cochin University Bachelors Degree course.
 
 ### HOW TO BUILD
-MeOr is based on Java SE 1.7. You'll need the same environment for building MeOr.
+Recommended Java version to build is Java 11. However, if you are using a version lower that Java 11, you might still be able to build after making minor changes to comply with older versions.
+
+[Build Instructions][build-doc]
 
 ### CREDITS
 - Renju Jose
 - Rohan Villoth
 - Abijith N V
 - Muhammad Rafeek
+
+### CONTRIBUTIONS
+Please raise an issue to suggest changes or for bug fixes. PRs are also welcome to make those changes yourself.
 
 ### LICENSE
 - Except where otherwise noted, all original content here are released under [GNU General Public License][GPL]. 
@@ -37,6 +42,7 @@ licensed under [Apache License 2.0][APACHE]
 
 ====================
 
+[build-doc]: ./BUILD.md
 [logo]: src/main/resources/meor-logo.png "MeOr logo"
 [GPL]: https://www.gnu.org/licenses/gpl-3.0.en.html "More info on GNU GPL"
 [GPL-logo]: src/main/resources/gplv3.png "GPLv3 logo"

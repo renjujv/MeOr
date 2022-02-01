@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import java.awt.*;
@@ -36,7 +37,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @author RenJOuS
  * 
  *  */
-class MainWindow extends JFrame{
+class MainWindow extends JFrame {
 	private final Color borderHighlightColor = new Color(0, 139, 139, 126);
 	private final Color borderShadowColor = new Color(0, 79, 79, 121);
 	private final DefaultListModel<String> listModel = new DefaultListModel<>();
@@ -44,6 +45,20 @@ class MainWindow extends JFrame{
 	private ArrayList<String> currentFilesArray;
 	private boolean filteredList = false;
 	private String filterQuery = null;
+	private final SwingWorker<Boolean, Integer> fileImportTask = new SwingWorker<>() {
+			@Override
+			protected Boolean doInBackground() {
+				try {
+					// long process moved to worker thread
+					FileChooser filechooser = new FileChooser();
+					filechooser.setVisible(true);
+					for (String value : currentFilesArray) listModel.addElement(value);
+				} catch (Exception exception) {
+					exception.printStackTrace();
+				}
+				return true;
+			}
+	};
 
 	public static void main(String[] args) {
 		MainWindow mainUI = new MainWindow();
@@ -53,7 +68,20 @@ class MainWindow extends JFrame{
 		});
 	}
 	
-	public void initComponents(){
+	private void initComponents(){
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.add(setFileMenu());
+		menuBar.add(setThemeMenu());
+		menuBar.add(setHelpMenu());
+		addSearchBarItemsToMenuBar(menuBar);
+		setJMenuBar(menuBar);
+
+		JPanel contentPane = new JPanel(new BorderLayout());
+		contentPane.add(setCategoryPanel(), BorderLayout.WEST);
+		contentPane.add(setItemsPanel(), BorderLayout.CENTER);
+		contentPane.add(setStatusBar(), BorderLayout.SOUTH);
+		setContentPane(contentPane);
+
 		String APP_ICON_PATH = "/meor_icon.png";
 		URL appIconURL = Objects.requireNonNull(MainWindow.class.getResource(APP_ICON_PATH));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(appIconURL));
@@ -61,27 +89,15 @@ class MainWindow extends JFrame{
 		setTitle("MeOr - Media Organiser");
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLooknFeel("System");
-
-		JPanel contentPane = new JPanel(new BorderLayout());
-		setContentPane(contentPane);
-
-		JMenuBar menuBar = setMenuBar();
-		setSearchBar(menuBar);
-
-		setCategoryPanel();
-		setItemsPanel();
-		setStatusBar();
-
+		setinitialSystemLooknFeel();
 		pack();			//fixed collapse of window on restore down
 	}
 
-	public void setCategoryPanel(){
+	private JPanel setCategoryPanel(){
 		JPanel categoryPanel = new JPanel();
 		BevelBorder bevelBorder = new BevelBorder(BevelBorder.RAISED, borderHighlightColor, borderShadowColor);
 		categoryPanel.setBorder(bevelBorder);
 		categoryPanel.setLayout(new BorderLayout(0, 0));
-		getContentPane().add(categoryPanel, BorderLayout.WEST);
 
 		JScrollPane categoryScrollPane = new JScrollPane();
 		categoryScrollPane.setViewportBorder(null);
@@ -91,71 +107,65 @@ class MainWindow extends JFrame{
 		categoryTree.setVisibleRowCount(40);
 		categoryScrollPane.setViewportView(categoryTree);
 		addTreeEventListeners(categoryTree);
-	}
-
-	private void addTreeEventListeners(JTree categoryTree) {
-		categoryTree.addTreeSelectionListener(treeSelectionEvent -> {
-			String selectedCategory = String.valueOf(treeSelectionEvent.getPath());
-			int lsindex = selectedCategory.lastIndexOf(", ");
-			selectedCategory = selectedCategory.substring(lsindex+2, selectedCategory.length()-1);
-			try {
-				currentFilesArray = FileOps.getFiles(selectedCategory, filterQuery);
-				listModel.removeAllElements();
-				listModel.addAll(currentFilesArray);
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
-		});
+		return categoryPanel;
 	}
 
 	private DefaultMutableTreeNode addCategoriesAndSubCategories() {
 		DefaultMutableTreeNode top = new DefaultMutableTreeNode("Categories");
+		
 		DefaultMutableTreeNode media = new DefaultMutableTreeNode("Media");
-		DefaultMutableTreeNode software = new DefaultMutableTreeNode("Softwares");
-		DefaultMutableTreeNode document = new DefaultMutableTreeNode("Documents");
+		
 		DefaultMutableTreeNode audio = new DefaultMutableTreeNode("Audio");
 		DefaultMutableTreeNode video = new DefaultMutableTreeNode("Video");
-		DefaultMutableTreeNode image = new DefaultMutableTreeNode("Images");
+		DefaultMutableTreeNode images = new DefaultMutableTreeNode("Images");
+
+		DefaultMutableTreeNode software = new DefaultMutableTreeNode("Software");
+
 		DefaultMutableTreeNode windows = new DefaultMutableTreeNode("Windows");
 		DefaultMutableTreeNode linux = new DefaultMutableTreeNode("Linux");
-		DefaultMutableTreeNode macintosh = new DefaultMutableTreeNode("Mac");
+		DefaultMutableTreeNode mac = new DefaultMutableTreeNode("Mac");
 		DefaultMutableTreeNode android = new DefaultMutableTreeNode("Android");
-		DefaultMutableTreeNode other = new DefaultMutableTreeNode("Others");
-		DefaultMutableTreeNode spreadsheet = new DefaultMutableTreeNode("Spreadsheets");
-		DefaultMutableTreeNode ebook = new DefaultMutableTreeNode("eBooks");
-		DefaultMutableTreeNode text = new DefaultMutableTreeNode("Rich Text");
-		DefaultMutableTreeNode presentation = new DefaultMutableTreeNode("Presentations");
-		DefaultMutableTreeNode pdf = new DefaultMutableTreeNode("Pdfs");
+		DefaultMutableTreeNode iOS = new DefaultMutableTreeNode("iOS");
+
+		DefaultMutableTreeNode documents = new DefaultMutableTreeNode("Documents");
+
+		DefaultMutableTreeNode richText = new DefaultMutableTreeNode("Rich Text");
+		DefaultMutableTreeNode spreadsheets = new DefaultMutableTreeNode("Spreadsheets");
+		DefaultMutableTreeNode presentations = new DefaultMutableTreeNode("Presentations");
+		DefaultMutableTreeNode ebooks = new DefaultMutableTreeNode("eBooks");
+		DefaultMutableTreeNode webpages = new DefaultMutableTreeNode("Web Pages");
+		DefaultMutableTreeNode pdfs = new DefaultMutableTreeNode("Pdfs");
 
 		top.add(media);
+		top.add(documents);
 		top.add(software);
-		top.add(document);
 
 		media.add(audio);
 		media.add(video);
-		media.add(image);
+		media.add(images);
 
 		software.add(windows);
 		software.add(linux);
-		software.add(macintosh);
+		software.add(mac);
 		software.add(android);
-		software.add(other);
+		software.add(iOS);
 
-		document.add(spreadsheet);
-		document.add(ebook);
-		document.add(text);
-		document.add(presentation);
-		document.add(pdf);
+		documents.add(richText);
+		documents.add(spreadsheets);
+		documents.add(presentations);
+		documents.add(ebooks);
+		documents.add(webpages);
+		documents.add(pdfs);
 
 		return top;
 	}
 
-	public void setItemsPanel(){
+	private JPanel setItemsPanel(){
 		JPanel itemsPanel = new JPanel();
 		BevelBorder bevelBorder = new BevelBorder(BevelBorder.RAISED, borderHighlightColor, borderShadowColor);
 		itemsPanel.setBorder(bevelBorder);
 		itemsPanel.setLayout(new BorderLayout(0, 0));
-		getContentPane().add(itemsPanel, BorderLayout.CENTER);
+
 
 		JScrollPane itemsScrollPane = new JScrollPane();
 		itemsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -171,41 +181,31 @@ class MainWindow extends JFrame{
 		itemsList.setModel(listModel);
 		addDoubleClickEventListenerForItemsList(itemsList);
 		itemsScrollPane.setViewportView(itemsList);
+		return itemsPanel;
 	}
 
-	private void addDoubleClickEventListenerForItemsList(JList<String> itemsList) {
-		itemsList.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				int clickCount = e.getClickCount();
-				if(clickCount == 2) {
-					String selected= itemsList.getSelectedValue();
-					System.out.println("Mouse clicked on list");
-					try {
-						FileOps.openFile(selected);
-					}
-					catch (IOException e1) {
-						System.out.println(e1.getMessage());
-					}
-				}
-			}
-		});
+	private JMenu setFileMenu() {
+		JMenu fileMenu = new JMenu("File");
+		JMenuItem refreshMenuItem = new JMenuItem("Refresh", KeyEvent.VK_R);
+		fileMenu.add(refreshMenuItem);
+		refreshMenuItem.addActionListener(actionEvent -> SwingUtilities.updateComponentTreeUI(getRootPane()));
+
+		JMenuItem importMenuItem = new JMenuItem("Import", KeyEvent.VK_I);
+		fileMenu.add(importMenuItem);
+		addImportFilesMenuItemListener(importMenuItem);
+
+		JMenuItem clearMenuItem = new JMenuItem("Clear list", KeyEvent.VK_C);
+		fileMenu.add(clearMenuItem);
+		clearMenuItem.addActionListener(actionEvent -> listModel.removeAllElements());
+
+		JMenuItem exitMenuItem = new JMenuItem("Exit", KeyEvent.VK_E);
+		fileMenu.add(exitMenuItem);
+		exitMenuItem.addActionListener(actionEvent -> System.exit(0));
+		return fileMenu;
 	}
 
-	public JMenuBar setMenuBar(){
-		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
-
-		addFileMenu(menuBar);
-		addThemeMenu(menuBar);
-		addHelpMenu(menuBar);
-
-		return menuBar;
-	}
-
-	private void addThemeMenu(JMenuBar menuBar) {
+	private JMenu setThemeMenu() {
 		JMenu themeMenu = new JMenu("Theme");
-		menuBar.add(themeMenu);
 
 		//ButtonGroup for grouping and adding exclusivity for themes RadioButtonMenuItem
 		ButtonGroup themeMenuGroup = new ButtonGroup();
@@ -231,6 +231,84 @@ class MainWindow extends JFrame{
 		themeMenu.add(XPlatformThemeMenuItem);
 
 		nimbusThemeMenuItem.setSelected(true);
+		return themeMenu;
+	}
+
+	private JMenu setHelpMenu() {
+		JMenu helpMenu = new JMenu("Help");
+
+		JMenuItem aboutMenuItem = new JMenuItem("About");
+		helpMenu.add(aboutMenuItem);
+		aboutMenuItem.addActionListener(actionEvent -> {
+			About help = new About();
+			help.setVisible(true);
+		});
+		return helpMenu;
+	}
+
+	private void addSearchBarItemsToMenuBar(JMenuBar menuBar) {
+		String SEARCH_LOGO = "/search.png";
+		URL iconURL = Objects.requireNonNull(MainWindow.class.getResource(SEARCH_LOGO));
+
+		menuBar.add(Box.createHorizontalStrut(400));				//For spacing between MenuItems and SearchBar
+
+		JLabel searchLabel = new JLabel("Search");
+		searchLabel.setIcon(new ImageIcon(iconURL));
+		menuBar.add(searchLabel);
+
+		JTextField searchField = new JTextField(20);
+		searchField.setToolTipText("Enter search text and press Go");
+		menuBar.add(searchField);
+
+		JButton searchButton = new JButton("Go");
+		searchButton.setToolTipText("Enter text and Click here");
+		menuBar.add(searchButton);
+
+		addSearchButtonActionListener(searchField, searchButton);
+	}
+
+	private JPanel setStatusBar(){
+		JPanel statusBar = new JPanel(new BorderLayout());
+		statusBar.setName("StatusBar");
+
+		JProgressBar progressBar = new JProgressBar(0,100);
+		progressBar.setBorder(new BevelBorder(BevelBorder.RAISED, borderHighlightColor, borderShadowColor));
+		statusBar.add(progressBar,BorderLayout.EAST);
+		return statusBar;
+	}
+
+	private void setinitialSystemLooknFeel() {
+		try {
+			for(UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()){
+				if("System".equals(info.getName())){
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
+		}
+		catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException | NullPointerException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void addTreeEventListeners(JTree categoryTree) {
+		categoryTree.addTreeSelectionListener(treeSelectionEvent -> {
+			String selectedCategory = String.valueOf(treeSelectionEvent.getPath());
+			int lsindex = selectedCategory.lastIndexOf(", ");
+			selectedCategory = selectedCategory.substring(lsindex+2, selectedCategory.length()-1);
+			try {
+				currentFilesArray = FileOps.getFiles(selectedCategory, filterQuery);
+				listModel.removeAllElements();
+				listModel.addAll(currentFilesArray);
+			} catch (Exception exception) {
+				exception.printStackTrace();
+			}
+		});
+	}
+
+	private void addImportFilesMenuItemListener(JMenuItem importMenuItem) {
+		importMenuItem.addActionListener(actionEvent -> fileImportTask.execute());
 	}
 
 	private void addThemeMenuItemEventListener(JRadioButtonMenuItem ThemeMenuItem, String LookAndFeelClassName) {
@@ -247,72 +325,8 @@ class MainWindow extends JFrame{
 		});
 	}
 
-	private void addHelpMenu(JMenuBar menuBar) {
-		JMenu helpMenu = new JMenu("Help");
-		menuBar.add(helpMenu);
-
-		JMenuItem aboutMenuItem = new JMenuItem("About");
-		helpMenu.add(aboutMenuItem);
-		aboutMenuItem.addActionListener(actionEvent -> {
-			About help = new About();
-			help.setVisible(true);
-		});
-	}
-
-	private void addFileMenu(JMenuBar menuBar) {
-		JMenu fileMenu = new JMenu("File");
-		menuBar.add(fileMenu);
-		JMenuItem refreshMenuItem = new JMenuItem("Refresh", KeyEvent.VK_R);
-		fileMenu.add(refreshMenuItem);
-		refreshMenuItem.addActionListener(actionEvent -> SwingUtilities.updateComponentTreeUI(getRootPane()));
-
-		JMenuItem importMenuItem = new JMenuItem("Import", KeyEvent.VK_I);
-		fileMenu.add(importMenuItem);
-		addImportFilesMenuItemListener(importMenuItem);
-
-		JMenuItem clearMenuItem = new JMenuItem("Clear list", KeyEvent.VK_C);
-		fileMenu.add(clearMenuItem);
-		clearMenuItem.addActionListener(actionEvent -> listModel.removeAllElements());
-
-		JMenuItem exitMenuItem = new JMenuItem("Exit", KeyEvent.VK_E);
-		fileMenu.add(exitMenuItem);
-		exitMenuItem.addActionListener(actionEvent -> System.exit(0));
-	}
-
-	private void addImportFilesMenuItemListener(JMenuItem importMenuItem) {
-		importMenuItem.addActionListener(actionEvent -> new SwingWorker<>() {
-			@Override
-			protected Object doInBackground() {
-				try {
-					FileChooser filechooser = new FileChooser();
-					filechooser.setVisible(true);					// long process moved to worker thread
-					for (String value : currentFilesArray) listModel.addElement(value);
-				} catch (Exception exception) {
-					System.out.println(exception.getMessage());
-				}
-				return null;
-			}
-		}.execute());
-	}
-
-	public void setSearchBar(JMenuBar menuBar) {
-		String SEARCH_LOGO = "/search.png";
-		menuBar.add(Box.createHorizontalStrut(400));				//For spacing between MenuItems
-
-		JLabel searchLabel = new JLabel("Search");
-		URL iconURL = Objects.requireNonNull(MainWindow.class.getResource(SEARCH_LOGO));
-		searchLabel.setIcon(new ImageIcon(iconURL));
-		menuBar.add(searchLabel);
-
-		JTextField searchField = new JTextField(20);
-		searchField.setToolTipText("Enter search text and press Go");
-		menuBar.add(searchField);
-
-		JButton searchButton = new JButton("Go");
-		searchButton.setToolTipText("Enter text and Click here");
-		menuBar.add(searchButton);
-
-		searchButton.addActionListener( actionEvent -> {
+	private void addSearchButtonActionListener(JTextField searchField, JButton searchButton) {
+		searchButton.addActionListener(actionEvent -> {
 			filterQuery = searchField.getText();
 			filteredList = !filterQuery.equals("");
 			System.out.println("Filterquery: "+filterQuery);
@@ -328,26 +342,22 @@ class MainWindow extends JFrame{
 		});
 	}
 
-	public void setStatusBar(){
-		JPanel statusBar = new JPanel(new BorderLayout());
-		statusBar.setName("StatusBar");
-		getContentPane().add(statusBar, BorderLayout.SOUTH);
-		JProgressBar progressBar = new JProgressBar(0,100);
-		statusBar.add(progressBar,BorderLayout.EAST);
-	}
-
-	private void setLooknFeel(String selectedtheme) {
-		try {
-			for(UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()){
-				if(selectedtheme.equals(info.getName())){
-					UIManager.setLookAndFeel(info.getClassName());
-					break;
+	private void addDoubleClickEventListenerForItemsList(JList<String> itemsList) {
+		itemsList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int clickCount = e.getClickCount();
+				if(clickCount == 2) {
+					String selected= itemsList.getSelectedValue();
+					System.out.println("Mouse clicked on list");
+					try {
+						FileOps.openFile(selected);
+					}
+					catch (IOException ioException) {
+						ioException.printStackTrace();
+					}
 				}
 			}
-		}
-		catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException | NullPointerException e) {
-			e.printStackTrace();
-		}
+		});
 	}
 }

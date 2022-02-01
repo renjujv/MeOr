@@ -1,6 +1,6 @@
 package io.github.renjujv.meor.fileio;
 
-import io.github.renjujv.meor.database.DataBase;
+import io.github.renjujv.meor.core.Database;
 
 import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
@@ -11,23 +11,19 @@ import java.nio.file.attribute.BasicFileAttributes;
      * @author HEXcube
      */
 public class ProcessFile extends SimpleFileVisitor<Path> {
-    private DataBase dbase = new DataBase();
+    private final Database dbase = new Database();
 
-    ProcessFile() throws Exception {
-        dbase.create();
+    ProcessFile() {
+        if(!dbase.filelistTableExists()) dbase.create();
     }
 
     @Override
     public FileVisitResult visitFile(Path aFile, BasicFileAttributes aAttrs) {
         try {
             dbase.insert(aFile, aAttrs.size());
-        } catch (Exception ignore) {
-            System.out.println(ignore.getMessage());
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
         return FileVisitResult.CONTINUE;
-    }
-
-    protected void finalize() {
-        dbase.closeConnection();
     }
 }

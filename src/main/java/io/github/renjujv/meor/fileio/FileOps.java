@@ -22,74 +22,47 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 
-import io.github.renjujv.meor.database.DataBase;
+import io.github.renjujv.meor.core.Database;
+import io.github.renjujv.meor.entity.Category;
 
 /**
  * @author HEXcube
  * 
  */
 public class FileOps {
-
-	public static final String[] categories = { "Media", "Documents", "Softwares" };
-	public static final String[][] subcategories = {
-		{ "Audio", "Video", "Images", "." },
-		{ "Rich Text", "Spreadsheet", "Presentation", "eBooks", "Web Pages", "." },
-		{ "Windows", "Linux", "Mac", "Android", "." } };
-	private static final String[][][] extensions = {
-		{
-			{ "mp3", "aac", "ogg", "flac", "m4a", "wma", "wav", "ape", "." },
-			{ "avi", "mkv", "wmv", "webm", "flv", "mp4", "3gp", "." },
-			{ "jpeg", "jpg", "png", "gif", "." }
-		},
-		{
-			{ "pdf", "doc", "txt", "odt", "." },
-			{ "ppt", "pptx", "odp", "." },
-			{ "xls", "odg", "." },
-			{ "ePub", "." },
-			{ "htm", "html", "xhtml", "mht", "." }
-		},
-		{
-			{ "exe", "msi", "." },
-			{ "deb", "rpm", "run", "mint", "app", "." },
-			{ "app", "." },
-			{ "apk", "." }
-		}
-	};
+	private static final String categoriesTitle = "Categories";
 
 	/**
-	 * @param FOLDER
-	 *            absolute path of folder to be added
+	 * @param absoluteFolderPath directory path to be scanned to add files
 	 * @throws Exception
 	 */
-	public static void addFolder(String FOLDER) throws Exception {
-		Files.walkFileTree(Paths.get(FOLDER), new ProcessFile());
+	public static void addFolder(String absoluteFolderPath) throws Exception {
+		Files.walkFileTree(Paths.get(absoluteFolderPath), new ProcessFile());
 	}
 
 	/**
-	 * @param category
-	 *            possible
-	 *            values:All,Media,Documents,Softwares,Audio,Video,Images,Rich
-	 *            Text,Spreadsheet,Presentation,eBooks,Web
-	 *            Pages,Windows,Linux,Mac,Android
-	 * @return
+	 * @param categoryName
+	 * possible values: All,Media,Documents,Softwares,Audio,Video,Images,Rich Text,Spreadsheet,
+	 * Presentation,eBooks,Web Pages,Windows,Linux,Mac,Android
+	 * @return ArrayList of filesNames as string
 	 * @throws Exception
 	 */
-	public static ArrayList<String> getFiles(String category, String query) throws Exception {
+	public static ArrayList<String> getFiles(String categoryName, String query) {
+		Category category = new Category();
 		ArrayList<String> filelist = new ArrayList<String>();
-		DataBase database = new DataBase();
+		Database database = new Database();
 		boolean iscategory = false, allcategories = false;
-		if (category.equals("Categories"))
+		if (categoryName.equals(categoriesTitle))
 			allcategories = true;
-		for (int i = 0; i < categories.length; i++) {
-			if (category.equals(categories[i]))
+		for (int i = 0; i < category.getCategories().length; i++) {
+			if (categoryName.equals(category.getCategories()[i]))
 				iscategory = true;
-			for (int j = 0; !subcategories[i][j].equals("."); j++)
-				if (category.equals(subcategories[i][j]) || iscategory
+			for (int j = 0; !category.getSubCategories()[i][j].equals("."); j++)
+				if (categoryName.equals(category.getSubCategories()[i][j]) || iscategory
 						|| allcategories)
-					for (int k = 0; !extensions[i][j][k].equals("."); k++)
-						filelist.addAll(database.retrieve(extensions[i][j][k], query));
+					for (int k = 0; !category.getExtensions()[i][j][k].equals("."); k++)
+						filelist.addAll(database.retrieve(category.getExtensions()[i][j][k], query));
 			if (iscategory)
 				break;
 		}
@@ -97,16 +70,12 @@ public class FileOps {
 		return filelist;
 	}
 
+	/**
+	 *
+	 * @param filepath Open the provided file using System according to the filename extension
+	 * @throws IOException
+	 */
 	public static void openFile(String filepath) throws IOException {
 		Desktop.getDesktop().open(new File(filepath));
-	}
-
-	/**
-	 * @param args
-	 * @throws Exception
-	 */
-	public static void main(String[] args) throws Exception {
-//		String[] files = getFiles("Categories");
-//		for (String file : files) System.out.println(file);
 	}
 }
