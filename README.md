@@ -16,6 +16,9 @@ Recommended Java version to build is Java 11. However, if you are using a versio
 - Abijith N V
 - Muhammad Rafeek
 
+### SCREENSHOT
+![Dashboard - Image category filtered](https://raw.githubusercontent.com/renjujv/MeOr/master/screens/Screenshot%202022-02-19%20at%2011.45.58%20PM.png)
+
 ### CONTRIBUTIONS
 Please raise an issue to suggest changes or for bug fixes. PRs are also welcome to make those changes yourself.
 
